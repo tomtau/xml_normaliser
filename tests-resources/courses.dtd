@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE courses [
 	<!ELEMENT courses ( course*) >
 	<!ELEMENT course ( title, taken_by) >
 		<!ATTLIST course cno CDATA #REQUIRED>
@@ -8,3 +9,4 @@
 		<!ATTLIST student sid CDATA #REQUIRED>
 	<!ELEMENT name ( #PCDATA)>
 	<!ELEMENT grade (#PCDATA) >
+]>
