@@ -1,17 +1,32 @@
 package uk.ac.ed.inf.proj.xmlnormaliser.parser.dtd;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
- * A POJO to hold information about the DTD structure
+ * A POJO to hold information about the DTD structure according to the 'A Normal Form for XML Documents'
  * @author Tomas Tauber
  *
  */
 public class DTD {
 	/* the root element's id */
 	private String root;
-	/* a mapping from element ids to the objects with all information */
-	private HashMap<String,DTDElement> elements;
+	/* a set of element ids */
+	private final HashSet<String> elements;
+	/* a set of attribute labels */
+	private final HashSet<String> attributes;
+	/* a mapping from elements to element type definitions */
+	private final HashMap<String,String> P_mapping;
+	/* a mapping from elements to a superset of attributes */
+	private final HashMap<String,HashSet<String>> R_mapping;	
+
+	public DTD() {
+		root = "";
+		elements = new HashSet<String>();
+		attributes = new HashSet<String>();
+		P_mapping = new HashMap<String,String>();
+		R_mapping = new HashMap<String,HashSet<String>>();
+	}
 	
 	/**
 	 * @return the root element ID
@@ -25,18 +40,75 @@ public class DTD {
 	public void setRoot(String root) {
 		this.root = root;
 	}
+	
 	/**
 	 * @return the DTD elements
 	 */
-	public HashMap<String, DTDElement> getElements() {
+	public HashSet<String> getElements() {
 		return elements;
 	}
+	
 	/**
-	 * @param elements the DTD elements
+	 * adds a new element
+	 * @param element
 	 */
-	public void setElements(HashMap<String, DTDElement> elements) {
-		this.elements = elements;
+	public void addElement(String element) {
+		elements.add(element);
 	}
 	
+	/**
+	 * @return the DTD attributes
+	 */
+	public HashSet<String> getAttributes() {
+		return attributes;
+	}
 	
+	/**
+	 * adds a new attribute
+	 * @param attribute
+	 */
+	public void addAtribute(String attribute) {
+		attributes.add(attribute);
+	}
+	
+	/**
+	 * Returns an element type definition
+	 * @param element
+	 * @return element type definition
+	 */
+	public String getElementTypeDefinition(String element) {
+		return P_mapping.get(element);
+	}
+	
+	/**
+	 * Adds a new element->element type definition mapping
+	 * @param element
+	 * @param typeDefinition
+	 */
+	public void addElementTypeDefinition(String element, String typeDefinition) {
+		P_mapping.put(element, typeDefinition);
+	}
+	
+	/**
+	 * Returns a superset of attributes for a given element
+	 * @param element
+	 * @return
+	 */
+	public HashSet<String> getElementAttributes(String element) {
+		return R_mapping.get(element);
+	}
+	
+	/**
+	 * Adds an attribute to an element
+	 * @param element
+	 * @param attribute
+	 */
+	public void addElementAttribute(String element, String attribute) {
+		HashSet<String> element_attributes = getElementAttributes(element);
+		if (element_attributes == null) {
+			element_attributes = new HashSet<String>();
+		}
+		element_attributes.add(attribute);
+		R_mapping.put(element, element_attributes);
+	}
 }

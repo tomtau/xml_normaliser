@@ -1,6 +1,7 @@
 package uk.ac.ed.inf.proj.xmlnormaliser.parser.dtd;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.Scanner;
 
 import junit.framework.Assert;
@@ -43,11 +44,23 @@ public class DTDParserTestCourses {
 	}
 
 	@Test
-	public void testNumberOfElementsMatches() {
-		Assert.assertEquals("Tests if the number of elements matches.", 7,
+	public void testElementsMatch() {
+		Assert.assertEquals("Tests if the elements match.", 7,
 				parsed.getElements().size());
+		for (String element : new String[] {"courses", "course", "title", "student", "name", "grade", "taken_by"}) {
+			Assert.assertTrue(parsed.getElements().contains(element));
+		}
 	}
 
+	@Test
+	public void testAttributesMatches() {
+		Assert.assertEquals("Tests if the attributes match.", 2,
+				parsed.getElements().size());
+		for (String attribute : new String[] {"@cno", "@sno"}) {
+			Assert.assertTrue(parsed.getAttributes().contains(attribute));
+		}
+	}	
+	
 	@Test
 	public void testRootElementMatches() {
 		Assert.assertEquals("Tests if the root element is correct.", "courses",
@@ -56,61 +69,56 @@ public class DTDParserTestCourses {
 
 	@Test
 	public void testCoursesElement() {
-		DTDElement expected = new DTDElement("courses");
-		expected.addChild("course*");
-		DTDElement actual = parsed.getElements().get("courses");
+		String expected = "course*";
+		String actual = parsed.getElementTypeDefinition("courses");
 		Assert.assertEquals("Tests the courses element.", expected, actual);
 	}
 
 	@Test
 	public void testCourseElement() {
-		DTDElement expected = new DTDElement("course");
-		expected.addChild("title");
-		expected.addChild("taken_by");
-		expected.addAttribute("@cno");
-		DTDElement actual = parsed.getElements().get("course");
+		String expected = "title,taken_by";
+		String actual = parsed.getElementTypeDefinition("course");
 		Assert.assertEquals("Tests the course element.", expected, actual);
+		HashSet<String> attributes = parsed.getElementAttributes("course");
+		Assert.assertTrue(attributes.contains("@cno"));
+		Assert.assertEquals(attributes.size(), 1);
 	}
 
 	@Test
 	public void testTitleElement() {
-		DTDElement expected = new DTDElement("title");
-		expected.addChild("#PCDATA");
-		DTDElement actual = parsed.getElements().get("title");
+		String expected = "#PCDATA";
+		String actual = parsed.getElementTypeDefinition("title");
 		Assert.assertEquals("Tests the title element.", expected, actual);
 	}
 	
 	@Test
 	public void testStudentElement() {
-		DTDElement expected = new DTDElement("student");
-		expected.addChild("name");
-		expected.addChild("grade");
-		expected.addAttribute("@sno");
-		DTDElement actual = parsed.getElements().get("student");
+		String expected = "name,grade";
+		String actual = parsed.getElementTypeDefinition("student");
 		Assert.assertEquals("Tests the student element.", expected, actual);
+		HashSet<String> attributes = parsed.getElementAttributes("student");
+		Assert.assertTrue(attributes.contains("@sno"));
+		Assert.assertEquals(attributes.size(), 1);		
 	}
 
 	@Test
 	public void testNameElement() {
-		DTDElement expected = new DTDElement("name");
-		expected.addChild("#PCDATA");
-		DTDElement actual = parsed.getElements().get("name");
+		String expected = "#PCDATA";
+		String actual = parsed.getElementTypeDefinition("name");
 		Assert.assertEquals("Tests the name element.", expected, actual);
 	}
 
 	@Test
 	public void testGradeElement() {
-		DTDElement expected = new DTDElement("grade");
-		expected.addChild("#PCDATA");
-		DTDElement actual = parsed.getElements().get("grade");
+		String expected = "#PCDATA";
+		String actual = parsed.getElementTypeDefinition("grade");
 		Assert.assertEquals("Tests the grade element.", expected, actual);
 	}	
 	
 	@Test
 	public void testTakenByElement() {
-		DTDElement expected = new DTDElement("taken_by");
-		expected.addChild("student*");
-		DTDElement actual = parsed.getElements().get("taken_by");
+		String expected = "student*";
+		String actual = parsed.getElementTypeDefinition("taken_by");
 		Assert.assertEquals("Tests the taken_by element.", expected, actual);
 	}
 
