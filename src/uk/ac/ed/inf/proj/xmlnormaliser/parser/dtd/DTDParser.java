@@ -3,11 +3,13 @@ package uk.ac.ed.inf.proj.xmlnormaliser.parser.dtd;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import uk.ac.ed.inf.proj.xmlnormaliser.parser.dtd.DTD.DTDType;
+
 /**
  * A class with a static method to parse a DTD into a POJO
  * TODO: handle entities
  * TODO: parse without a doctype (root element as a parameter)
- * TODO: parse/represent element type definition better 
+ * TODO: parse/represent element type definition better + detect the DTD type 
  * @author Tomas Tauber
  *
  */
@@ -41,6 +43,9 @@ public class DTDParser {
 			String element = elements.group().replace("<!ELEMENT", "").trim().replaceAll("\\s+", " ");
 			String elementId = element.substring(0,element.indexOf(' '));
 			String elementDefinition = element.substring(element.indexOf(' '),element.length()).replaceAll("\\s+", "");
+			if (elementDefinition.indexOf('|') != -1) {
+				result.setType(DTDType.DISJUNCTIVE);
+			}
 			result.addElement(elementId);
 			result.addElementTypeDefinition(elementId, elementDefinition);
 		}

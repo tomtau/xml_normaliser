@@ -9,6 +9,9 @@ import java.util.HashSet;
  *
  */
 public class DTD {
+	
+	public static enum DTDType {SIMPLE, DISJUNCTIVE};
+	
 	/* the root element's id */
 	private String root;
 	/* a set of element ids */
@@ -18,7 +21,9 @@ public class DTD {
 	/* a mapping from elements to element type definitions */
 	private final HashMap<String,String> P_mapping;
 	/* a mapping from elements to a superset of attributes */
-	private final HashMap<String,HashSet<String>> R_mapping;	
+	private final HashMap<String,HashSet<String>> R_mapping;
+	/* a type of the DTD */
+	private DTDType type;
 
 	public DTD() {
 		root = "";
@@ -26,6 +31,7 @@ public class DTD {
 		attributes = new HashSet<String>();
 		P_mapping = new HashMap<String,String>();
 		R_mapping = new HashMap<String,HashSet<String>>();
+		setType(DTDType.SIMPLE);
 	}
 	
 	/**
@@ -111,4 +117,19 @@ public class DTD {
 		element_attributes.add(attribute);
 		R_mapping.put(element, element_attributes);
 	}
+
+	/**
+	 * @return the DTD type
+	 */
+	public DTDType getType() {
+		return type;
+	}
+
+	/**
+	 * @param type the DTD type to set
+	 */
+	public void setType(DTDType type) {
+		this.type = type;
+	}
+	
 }

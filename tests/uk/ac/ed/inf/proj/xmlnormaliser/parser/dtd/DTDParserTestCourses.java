@@ -9,6 +9,8 @@ import junit.framework.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import uk.ac.ed.inf.proj.xmlnormaliser.parser.dtd.DTD.DTDType;
+
 /**
  * Unit tests of the basic DTD parser
  * 
@@ -120,6 +122,13 @@ public class DTDParserTestCourses {
 		String expected = "(student*)";
 		String actual = parsed.getElementTypeDefinition("taken_by");
 		Assert.assertEquals("Tests the taken_by element.", expected, actual);
+	}
+	
+	@Test
+	public void testSimpleType() {
+		DTD.DTDType expected = DTDType.SIMPLE;
+		DTD.DTDType actual = parsed.getType();
+		Assert.assertEquals("Tests the DTD type.", expected, actual);
 	}
 
 }

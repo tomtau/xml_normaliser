@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE university [
+	<!ELEMENT university (course*)>
+	<!ELEMENT course (number, student*)>
+	<!ELEMENT number (#PCDATA)>
+	<!ELEMENT student ((name | FLname), grade)>
+	<!ELEMENT name (#PCDATA)>
+	<!ELEMENT FLname (first_name, last_name)>
+	<!ELEMENT first_name (#PCDATA)>
+	<!ELEMENT last_name (#PCDATA)>
+	<!ELEMENT grade (#PCDATA)>
+]>
