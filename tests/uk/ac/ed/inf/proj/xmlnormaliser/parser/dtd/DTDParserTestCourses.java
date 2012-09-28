@@ -55,8 +55,8 @@ public class DTDParserTestCourses {
 	@Test
 	public void testAttributesMatches() {
 		Assert.assertEquals("Tests if the attributes match.", 2,
-				parsed.getElements().size());
-		for (String attribute : new String[] {"@cno", "@sno"}) {
+				parsed.getAttributes().size());
+		for (String attribute : new String[] {"@cno", "@sid"}) {
 			Assert.assertTrue(parsed.getAttributes().contains(attribute));
 		}
 	}	
@@ -69,14 +69,14 @@ public class DTDParserTestCourses {
 
 	@Test
 	public void testCoursesElement() {
-		String expected = "course*";
+		String expected = "(course*)";
 		String actual = parsed.getElementTypeDefinition("courses");
 		Assert.assertEquals("Tests the courses element.", expected, actual);
 	}
 
 	@Test
 	public void testCourseElement() {
-		String expected = "title,taken_by";
+		String expected = "(title,taken_by)";
 		String actual = parsed.getElementTypeDefinition("course");
 		Assert.assertEquals("Tests the course element.", expected, actual);
 		HashSet<String> attributes = parsed.getElementAttributes("course");
@@ -86,38 +86,38 @@ public class DTDParserTestCourses {
 
 	@Test
 	public void testTitleElement() {
-		String expected = "#PCDATA";
+		String expected = "(#PCDATA)";
 		String actual = parsed.getElementTypeDefinition("title");
 		Assert.assertEquals("Tests the title element.", expected, actual);
 	}
 	
 	@Test
 	public void testStudentElement() {
-		String expected = "name,grade";
+		String expected = "(name,grade)";
 		String actual = parsed.getElementTypeDefinition("student");
 		Assert.assertEquals("Tests the student element.", expected, actual);
 		HashSet<String> attributes = parsed.getElementAttributes("student");
-		Assert.assertTrue(attributes.contains("@sno"));
+		Assert.assertTrue(attributes.contains("@sid"));
 		Assert.assertEquals(attributes.size(), 1);		
 	}
 
 	@Test
 	public void testNameElement() {
-		String expected = "#PCDATA";
+		String expected = "(#PCDATA)";
 		String actual = parsed.getElementTypeDefinition("name");
 		Assert.assertEquals("Tests the name element.", expected, actual);
 	}
 
 	@Test
 	public void testGradeElement() {
-		String expected = "#PCDATA";
+		String expected = "(#PCDATA)";
 		String actual = parsed.getElementTypeDefinition("grade");
 		Assert.assertEquals("Tests the grade element.", expected, actual);
 	}	
 	
 	@Test
 	public void testTakenByElement() {
-		String expected = "student*";
+		String expected = "(student*)";
 		String actual = parsed.getElementTypeDefinition("taken_by");
 		Assert.assertEquals("Tests the taken_by element.", expected, actual);
 	}
