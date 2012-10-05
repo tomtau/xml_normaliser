@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE company [
+	<!ELEMENT company (department*)>
+	<!ELEMENT department (dep_name, constitution)>
+		<!ATTLIST department dno CDATA #REQUIRED>
+	<!ELEMENT dep_name (#PCDATA)>
+	<!ELEMENT constitution (employee*)>
+	<!ELEMENT employee (name, position)>
+		<!ATTLIST employee eno CDATA #REQUIRED>
+	<!ELEMENT name (#PCDATA)>
+	<!ELEMENT position (#PCDATA)>
+]>
