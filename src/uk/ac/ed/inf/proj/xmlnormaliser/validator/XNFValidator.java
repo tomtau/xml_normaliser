@@ -1,5 +1,8 @@
 package uk.ac.ed.inf.proj.xmlnormaliser.validator;
 
+import java.util.HashMap;
+
+import uk.ac.ed.inf.proj.xmlnormaliser.parser.dtd.DTD;
 import uk.ac.ed.inf.proj.xmlnormaliser.parser.fd.FDPath;
 
 /**
@@ -23,4 +26,14 @@ public class XNFValidator {
 		return false;
 	}
 
+	/**
+	 * Returns a set of XFDs that is combination of implicit DTDs and original FDs without trivial ones
+	 * @param documentStructure
+	 * @param originalFunctionalDependencies
+	 * @return a new set of XFDs
+	 */
+	public static HashMap<FDPath, FDPath> getSigma(DTD documentStructure, HashMap<FDPath, FDPath> originalFunctionalDependencies) {
+		HashMap<FDPath, FDPath> result = new HashMap<FDPath, FDPath>();
+		return result;
+	}
 }
