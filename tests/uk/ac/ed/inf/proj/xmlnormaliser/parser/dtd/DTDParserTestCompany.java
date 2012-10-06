@@ -1,13 +1,13 @@
 package uk.ac.ed.inf.proj.xmlnormaliser.parser.dtd;
 
 import java.io.File;
-import java.util.Scanner;
 
 import junit.framework.Assert;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import uk.ac.ed.inf.proj.xmlnormaliser.Utils;
 import uk.ac.ed.inf.proj.xmlnormaliser.parser.dtd.DTD.DTDType;
 
 /**
@@ -32,16 +32,7 @@ public class DTDParserTestCompany {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		StringBuilder fileBuffer = new StringBuilder((int) TEST_FILE.length());
-		Scanner scanner = new Scanner(TEST_FILE);
-		try {
-			while (scanner.hasNextLine()) {
-				fileBuffer.append(scanner.nextLine());
-			}
-		} finally {
-			scanner.close();
-		}
-		parsed = DTDParser.parse(fileBuffer.toString());
+		parsed = DTDParser.parse(Utils.readFile(TEST_FILE));
 	}
 
 	@Test

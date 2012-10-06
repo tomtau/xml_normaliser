@@ -24,6 +24,7 @@ public class FDPath {
 	 * @param arrayOfPaths
 	 */
 	public FDPath(String... arrayOfPaths) {
+		paths = new HashSet<String>();
 		for (String path : arrayOfPaths) {
 			paths.add(path);
 		}

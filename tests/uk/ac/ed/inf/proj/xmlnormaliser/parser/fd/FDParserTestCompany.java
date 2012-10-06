@@ -2,12 +2,13 @@ package uk.ac.ed.inf.proj.xmlnormaliser.parser.fd;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.Scanner;
 
 import junit.framework.Assert;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import uk.ac.ed.inf.proj.xmlnormaliser.Utils;
 
 /**
  * Unit tests of the parsing FDs
@@ -17,12 +18,12 @@ import org.junit.Test;
  */
 public class FDParserTestCompany {
 
-	/* the parsed DTD object */
+	/* the parsed FDs */
 	private static HashMap<FDPath, FDPath> parsed;
 
-	/* the test DTD */
+	/* the test FD */
 	private static final File TEST_FILE = new File("tests-resources",
-			"company.dtd");
+			"company.txt");
 
 	/**
 	 * Reads the file and loads it into the parser
@@ -31,16 +32,7 @@ public class FDParserTestCompany {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		StringBuilder fileBuffer = new StringBuilder((int) TEST_FILE.length());
-		Scanner scanner = new Scanner(TEST_FILE);
-		try {
-			while (scanner.hasNextLine()) {
-				fileBuffer.append(scanner.nextLine());
-			}
-		} finally {
-			scanner.close();
-		}
-		parsed = FDParser.parse(fileBuffer.toString());
+		parsed = FDParser.parse(Utils.readFile(TEST_FILE));
 	}
 
 	
