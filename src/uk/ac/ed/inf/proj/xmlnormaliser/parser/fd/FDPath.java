@@ -7,16 +7,15 @@ import java.util.HashSet;
  * @author Tomas Tauber
  *
  */
-public class FDPath {
-	
-	/* a set of all paths represented as strings */
-	private HashSet<String> paths;
-	
+public class FDPath extends HashSet<String> {
+
+	private static final long serialVersionUID = -269171907491472277L;
+
 	/**
 	 * A default constructor
 	 */
 	public FDPath() {
-		paths = new HashSet<String>();
+		super();
 	}
 	
 	/**
@@ -24,26 +23,18 @@ public class FDPath {
 	 * @param arrayOfPaths
 	 */
 	public FDPath(String... arrayOfPaths) {
-		paths = new HashSet<String>();
+		super();
 		for (String path : arrayOfPaths) {
-			paths.add(path);
+			this.add(path);
 		}
-	}
-	
-	/**
-	 * Adds a new path
-	 * @param path String representation of a path
-	 */
-	public void addPath(String path) {
-		paths.add(path);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		FDPath other = (FDPath) obj;
-		if (paths.size() == other.paths.size()) {
-			for (String path : paths) {
-				if (!paths.contains(path)) {
+		if (this.size() == other.size()) {
+			for (String path : this) {
+				if (!other.contains(path)) {
 					return false;
 				}
 			}
@@ -54,11 +45,11 @@ public class FDPath {
 
 	@Override
 	public int hashCode() {
-		if (paths.isEmpty()) {
+		if (this.isEmpty()) {
 			return -1;
 		} else {
 			int result = 0;
-			for (String path : paths) {
+			for (String path : this) {
 				result += path.hashCode();
 			}
 			return result;
@@ -68,11 +59,10 @@ public class FDPath {
 	@Override
 	public String toString() {
 		StringBuilder output = new StringBuilder();
-		for (String path : paths) {
+		for (String path : this) {
 			output.append(path).append("; ");
 		}
 		return output.toString();
 	}
-	
 	
 }
