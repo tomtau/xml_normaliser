@@ -23,6 +23,30 @@ public class XNFValidator {
 	 * @return true if trivial
 	 */
 	public static boolean isTrivial(FDPath leftHandSide, String rightHandSide) {
+		if (rightHandSide.indexOf('.') == -1) { // root - case 1
+			return true;
+		}
+		boolean hasAttribute = rightHandSide.contains(".@");
+		String prefix = null;
+		if (hasAttribute) {
+			prefix = rightHandSide.split(".@")[0];
+		}
+		for (String path : leftHandSide) {
+			if (path.equalsIgnoreCase(rightHandSide)) { // equal - case 2
+				return true;
+			}
+			if (hasAttribute) {
+				if (prefix.equalsIgnoreCase(path)) { // prefix - case 4
+					return true;
+				}
+			} else { // prefix - case 3
+				if (path.contains(".@")) {
+					if (path.split(".@")[0].equalsIgnoreCase(rightHandSide)) {
+						return true;
+					}
+				}
+			}
+		}
 		return false;
 	}
 
