@@ -12,6 +12,10 @@ import java.util.HashMap;
  */
 public class FDParser {
 	
+	private static String XFD_SEPERATOR = "\n";
+	private static String PATH_SEPERATOR = ";";
+	private static String DEPENDENCY_ARROW = "->";
+	
 	private FDParser() {
 	}
 	
@@ -22,6 +26,19 @@ public class FDParser {
 	 */
 	public static HashMap<FDPath, FDPath> parse(String document) {
 		HashMap<FDPath, FDPath> result = new HashMap<FDPath, FDPath>();
+		String[] lines = document.replace(" ", "").split(XFD_SEPERATOR);
+		for (String line : lines) {
+			String[] xfd = line.split(DEPENDENCY_ARROW);
+			if (xfd.length == 2) {
+				FDPath lhs = new FDPath(xfd[0].split(PATH_SEPERATOR));
+				FDPath rhs = new FDPath(xfd[1].split(PATH_SEPERATOR));
+				if (result.containsKey(lhs)) {
+					result.get(lhs).addAll(rhs);
+				} else {
+					result.put(lhs, rhs);
+				}
+			}
+		}
 		return result;
 	}
 	

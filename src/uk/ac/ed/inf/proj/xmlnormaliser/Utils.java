@@ -27,7 +27,7 @@ public class Utils {
 		Scanner scanner = new Scanner(input);
 		try {
 			while (scanner.hasNextLine()) {
-				fileBuffer.append(scanner.nextLine());
+				fileBuffer.append(scanner.nextLine()).append('\n');
 			}
 		} finally {
 			scanner.close();
