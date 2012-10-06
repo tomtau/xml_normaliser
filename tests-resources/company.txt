@@ -1,0 +1,3 @@
+company.department -> company.department.@dno
+company.department.@dno; company.department.constitution.employee -> company.department.constitution.employee.position
+company.department.dep_name -> company.department.constitution.employee.@eno
