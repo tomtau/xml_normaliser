@@ -9,4 +9,4 @@
  * @author Tomas Tauber
  *
  */
-package uk.ac.ed.inf.proj.xmlnormaliser.parser.fd;
+package uk.ac.ed.inf.proj.xmlnormaliser.validator;
