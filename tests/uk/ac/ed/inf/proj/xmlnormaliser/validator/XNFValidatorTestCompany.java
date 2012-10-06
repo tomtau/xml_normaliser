@@ -66,5 +66,13 @@ public class XNFValidatorTestCompany {
 		for (FDPath key : expected.keySet()) {
 			Assert.assertEquals(expected.get(key), actual.get(key));
 		}
-	}	
+	}
+	
+	@Test
+	public void testGetClosure() {
+		FDPath expected = new FDPath("company.department.dep_name", "company", "company.department", "company.department.@dno", "company.department.constitution.employee.@eno");
+		FDPath actual = XNFValidator.getClosure(new FDPath("company.department.dep_name"), "company.department.constitution.employee.@eno", XNFValidator.getSigma(parsedDTD, originalFds));
+		Assert.assertEquals(expected, actual);
+	}
+	
 }

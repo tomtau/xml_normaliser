@@ -36,4 +36,16 @@ public class XNFValidator {
 		HashMap<FDPath, FDPath> result = new HashMap<FDPath, FDPath>();
 		return result;
 	}
+	
+	/**
+	 * Computes a closure of a given xfd
+	 * @param leftHandSide
+	 * @param rightHandSide
+	 * @param xfds
+	 * @return a closure (set of paths)
+	 */
+	public static FDPath getClosure(FDPath leftHandSide, String rightHandSide, HashMap<FDPath, FDPath> xfds) {
+		FDPath result = new FDPath();
+		return result;
+	}
 }

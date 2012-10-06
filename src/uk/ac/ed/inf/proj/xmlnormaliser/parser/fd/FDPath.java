@@ -64,6 +64,15 @@ public class FDPath {
 			return result;
 		}
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder output = new StringBuilder();
+		for (String path : paths) {
+			output.append(path).append("; ");
+		}
+		return output.toString();
+	}
 	
 	
 }
