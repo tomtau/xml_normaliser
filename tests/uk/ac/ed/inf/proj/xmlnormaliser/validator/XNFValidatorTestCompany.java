@@ -89,5 +89,14 @@ public class XNFValidatorTestCompany {
 		FDPath actual =  XNFValidator.getClosure(new FDPath("company.department.dep_name"), "company.department.constitution.employee.@eno", XNFValidator.getSigma(parsedDTD, originalFds), parsedDTD);
 		Assert.assertEquals(expected, actual);
 	}
+ 
+	@Test
+	public void testIsXNF() {
+		Assert.assertTrue(XNFValidator.isXNF(new FDPath("company.department.@dno", "company.department.constitution.employee"), "company.department.constitution.employee.position", originalFds, parsedDTD));
+	}
 	
+	@Test
+	public void testIsNotXNF() {
+		Assert.assertFalse(XNFValidator.isXNF(new FDPath("company.department.dep_name"), "company.department.constitution.employee.@eno", originalFds, parsedDTD));
+	}
 }

@@ -232,4 +232,17 @@ public class XNFValidator {
 		} while (oldLength != newLength);
 		return result;
 	}
+	
+
+	/**
+	 * Return whether a given XFD satisfies XNF
+	 * @param leftHandSide
+	 * @param rightHandSide
+	 * @param originalXfds
+	 * @param doc
+	 * @return true if in xnf
+	 */
+	public static boolean isXNF(FDPath leftHandSide, String rightHandSide, HashMap<FDPath, FDPath> originalXfds, DTD doc) {
+		return true;
+	}
 }
