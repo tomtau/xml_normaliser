@@ -1,7 +1,10 @@
 package uk.ac.ed.inf.proj.xmlnormaliser.validator;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+
+import org.apache.log4j.Logger;
 
 import uk.ac.ed.inf.proj.xmlnormaliser.parser.dtd.DTD;
 import uk.ac.ed.inf.proj.xmlnormaliser.parser.dtd.DTDParser;
@@ -14,6 +17,8 @@ import uk.ac.ed.inf.proj.xmlnormaliser.parser.fd.FDPath;
  * 
  */
 public class XNFValidator {
+
+	private static final Logger LOGGER = Logger.getLogger(XNFValidator.class.getName());
 
 	private XNFValidator() {
 	}
@@ -77,7 +82,7 @@ public class XNFValidator {
 		}
 		return "";
 	}
-	
+
 	/**
 	 * Returns a set of XFDs that is combination of implicit DTDs and original FDs without trivial ones
 	 * @param documentStructure
@@ -115,10 +120,24 @@ public class XNFValidator {
 				}
 			}
 		}
-		
+
 		return sigma;
 	}
-	
+
+	private static String greatestCommonPrefix(String a, String b) {
+		int minLength = Math.min(a.length(), b.length());
+		int lastDot = 0;
+		for (int i = 0; i < minLength; i++) {
+			if (a.charAt(i) == '.') {
+				lastDot = i;
+			}
+			if (a.charAt(i) != b.charAt(i)) {
+				return a.substring(0, lastDot);
+			}
+		}
+		return a.substring(0, minLength);
+	}	
+
 	/**
 	 * Computes a closure of a given xfd
 	 * @param leftHandSide
@@ -126,8 +145,91 @@ public class XNFValidator {
 	 * @param xfds
 	 * @return a closure (set of paths)
 	 */
-	public static FDPath getClosure(FDPath leftHandSide, String rightHandSide, HashMap<FDPath, FDPath> xfds) {
+	public static FDPath getClosure(FDPath leftHandSide, String rightHandSide, HashMap<FDPath, FDPath> xfds, DTD documentStructure) {
 		FDPath result = new FDPath();
+		ArrayList<Object[]> sigma = new ArrayList<Object[]>();
+		for (FDPath key : xfds.keySet()) {
+			for (String rhs : xfds.get(key)) {
+				sigma.add(new Object[] {key, rhs});
+			}
+		}
+		LOGGER.debug("Adding paths from LHS");
+		for (String path : leftHandSide) {
+			result.add(path); //add all paths of input xfd
+		}
+		LOGGER.debug(result);
+		LOGGER.debug("Adding root");
+		result.add(rightHandSide.substring(0, rightHandSide.indexOf('.'))); //root
+		LOGGER.debug(result);
+		FDPath toAdd = new FDPath();
+		LOGGER.debug("Adding (element) prefixes");
+		for (String path : result) {
+			if (!path.contains("@")) {
+				if (path.lastIndexOf('.') != -1) {
+					toAdd.add(path.substring(0, path.lastIndexOf('.')));
+				}
+			}
+		}
+		result.addAll(toAdd);
+		LOGGER.debug(result);
+		toAdd.clear();
+		LOGGER.debug("Adding (attribute) prefixes");
+		for (String path : result) {
+			HashSet<String> attributes = documentStructure.getElementAttributes(path.substring(path.lastIndexOf('.')+1));
+			if (attributes != null) {
+				for (String attribute : attributes) {
+					toAdd.add(path + "." + attribute);
+				}
+			}
+		}
+		result.addAll(toAdd);
+		LOGGER.debug(result);
+		int newLength = result.size();
+		int oldLength;
+		do {
+			oldLength = newLength;
+			for (int i = 0; i < sigma.size(); i++) {
+				FDPath lhs = (FDPath) sigma.get(i)[0];
+				String rhs = (String) sigma.get(i)[1];
+				LOGGER.debug(lhs + " -> " + rhs);
+				String[][] prefixes = new String[lhs.size()][2];
+				int p_index = 0;
+				for (String path : lhs) {
+					prefixes[p_index][0] = path;
+					prefixes[p_index][1] = greatestCommonPrefix(path, rhs);
+					LOGGER.debug(path + " greatest common: " + prefixes[p_index][1] );
+					p_index++;
+				}
+				toAdd.clear();
+				for (String qpath : result) {
+					boolean prefix_condition = true;
+					for (int p = 0; p < p_index; p++) {
+						prefix_condition = prefix_condition && qpath.startsWith(prefixes[p][1]) && (prefixes[p][0].startsWith(qpath) || rhs.startsWith(qpath));
+					}
+					if (prefix_condition) {
+						toAdd.add(rhs);
+						if (!rhs.contains("@") && rhs.lastIndexOf('.') != -1) {
+							String qprime = rhs.substring(0, rhs.lastIndexOf('.'));
+							toAdd.add(qprime);
+							HashSet<String> attributes = documentStructure.getElementAttributes(qprime.substring(qprime.lastIndexOf('.') + 1));
+							if (attributes != null) {
+								for (String attribute : attributes) {
+									toAdd.add(qprime + "." + attribute);
+								}
+							}
+						}
+						sigma.remove(i);
+						break;
+					}
+				}
+				LOGGER.debug("Adding common prefixes");
+				result.addAll(toAdd);
+				LOGGER.debug(result);
+
+			}
+
+			newLength = result.size();
+		} while (oldLength != newLength);
 		return result;
 	}
 }

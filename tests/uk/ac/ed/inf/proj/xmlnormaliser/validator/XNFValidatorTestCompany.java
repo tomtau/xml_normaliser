@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import junit.framework.Assert;
 
+import org.apache.log4j.BasicConfigurator;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -39,6 +40,7 @@ public class XNFValidatorTestCompany {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		BasicConfigurator.configure();
 		originalFds = FDParser.parse(Utils.readFile(TEST_FILE_FD));
 		parsedDTD = DTDParser.parse(Utils.readFile(TEST_FILE_DTD));
 	}	
@@ -83,8 +85,8 @@ public class XNFValidatorTestCompany {
 	
 	@Test
 	public void testGetClosure() {
-		FDPath expected = new FDPath("company.department.dep_name", "company", "company.department", "company.department.@dno", "company.department.constitution.employee.@eno");
-		FDPath actual = XNFValidator.getClosure(new FDPath("company.department.dep_name"), "company.department.constitution.employee.@eno", XNFValidator.getSigma(parsedDTD, originalFds));
+		FDPath expected = new FDPath("company.department.dep_name", "company", "company.department", "company.department.@dno", "company.department.constitution.employee.@eno", "company.department.constitution");
+		FDPath actual =  XNFValidator.getClosure(new FDPath("company.department.dep_name"), "company.department.constitution.employee.@eno", XNFValidator.getSigma(parsedDTD, originalFds), parsedDTD);
 		Assert.assertEquals(expected, actual);
 	}
 	

@@ -11,6 +11,7 @@
     <path id="xml_normaliser.classpath">
         <pathelement location="bin"/>
         <path refid="JUnit 4.libraryclasspath"/>
+    	<pathelement location="libs/log4j.jar"/>
     </path>
     <target name="init">
         <mkdir dir="bin"/>
