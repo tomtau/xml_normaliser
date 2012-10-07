@@ -51,6 +51,7 @@
         	<test name="uk.ac.ed.inf.proj.xmlnormaliser.parser.dtd.DTDParserTestCompany" todir="${junit.output.dir}"/>
         	<test name="uk.ac.ed.inf.proj.xmlnormaliser.parser.fd.FDParserTestCompany" todir="${junit.output.dir}"/>
         	<test name="uk.ac.ed.inf.proj.xmlnormaliser.validator.XNFValidatorTestCompany" todir="${junit.output.dir}"/>
+        	<test name="uk.ac.ed.inf.proj.xmlnormaliser.validator.XNFValidatorTestCourses" todir="${junit.output.dir}"/>
             <classpath refid="xml_normaliser.classpath"/>
         </junit>
     </target>

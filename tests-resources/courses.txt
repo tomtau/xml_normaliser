@@ -1,0 +1,3 @@
+courses.course.@cno -> courses.course
+courses.course; courses.course.taken_by.student.@sno -> courses.course.taken_by.student
+courses; courses.course.taken_by.student.@sno -> courses.course.taken_by.student.name.#PCDATA
