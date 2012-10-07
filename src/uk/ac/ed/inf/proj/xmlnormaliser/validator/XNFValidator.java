@@ -243,6 +243,8 @@ public class XNFValidator {
 	 * @return true if in xnf
 	 */
 	public static boolean isXNF(FDPath leftHandSide, String rightHandSide, HashMap<FDPath, FDPath> originalXfds, DTD doc) {
-		return true;
+		String implied = rightHandSide.substring(0, rightHandSide.lastIndexOf('.'));
+		FDPath closure =  getClosure(leftHandSide, rightHandSide, getSigma(doc, originalXfds), doc);
+		return closure.contains(implied);
 	}
 }
