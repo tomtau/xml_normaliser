@@ -25,8 +25,20 @@ public class DTDParser {
 	private static final Pattern ELEMENT_REGEX = Pattern.compile("<!ELEMENT\\s+\\w+\\s+[^>]+");
 	private static final Pattern ATTLIST_REGEX = Pattern.compile("<!ATTLIST\\s+\\w+\\s+\\w+");
 	private static final Pattern DOCTYPE_REGEX = Pattern.compile("<!DOCTYPE\\s+\\w+");
+	private static final Pattern TOKEN_REGEX = Pattern.compile("(#)?\\w+[\\*]?");
 	
 	private DTDParser() {
+	}
+	
+	/**
+	 * Gets all tokens from a given children string
+	 * @param children
+	 * @return array of tokens
+	 */
+	public static String[] getTokens(String children) {
+		Matcher tokens = TOKEN_REGEX.matcher(children);
+		String[] result = new String[tokens.groupCount()];
+		return new String[] {""};
 	}
 	
 	/**

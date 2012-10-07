@@ -122,4 +122,26 @@ public class DTDParserTestCourses {
 		Assert.assertEquals("Tests the DTD type.", expected, actual);
 	}
 
+	@Test
+	public void testGetTokensTakenBy() {
+		String expected = "student*";
+		String actual = DTDParser.getTokens("(student*)")[0];
+		Assert.assertEquals("Tests the taken_by get token.", expected, actual);
+	}
+	
+	@Test
+	public void testGetTokensPCData() {
+		String expected = "#PCDATA";
+		String actual = DTDParser.getTokens("(#PCDATA)")[0];
+		Assert.assertEquals("Tests the PCDATA get token.", expected, actual);
+	}
+	
+	@Test
+	public void testGetTokensCourse() {
+		String[] expected = {"title", "taken_by"};
+		String[] actual = DTDParser.getTokens("(title, taken_by)");
+		for (int i = 0; i < expected.length; i++) {
+			Assert.assertEquals("Tests the course get token.", expected[i], actual[i]);
+		}
+	}	
 }
