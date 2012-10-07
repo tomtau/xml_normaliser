@@ -54,11 +54,24 @@ public class XNFValidatorTestCompany {
 	}
 	
 	@Test
+	public void testPathCompany() {
+		String expected = "company.department";
+		String actual = XNFValidator.getPath("", parsedDTD.getRoot(), "department", parsedDTD);
+		Assert.assertEquals(expected, actual);
+	}
+
+	@Test
+	public void testPathEmployee() {
+		String expected = "company.department.constitution.employee";
+		String actual = XNFValidator.getPath("", parsedDTD.getRoot(), "employee", parsedDTD);
+		Assert.assertEquals(expected, actual);
+	}	
+	
+	@Test
 	public void testGetSigma() {
 		HashMap<FDPath, FDPath> expected = new HashMap<FDPath, FDPath>();
-		expected.put(new FDPath("company.department"), new FDPath("company.department.dep_name"));
-		expected.put(new FDPath("company.department.constitution.employee"), new FDPath("company.department.constitution.employee.name"));
-		expected.put(new FDPath("company.department.constitution.employee"), new FDPath("company.department.constitution.employee.position"));
+		expected.put(new FDPath("company.department"), new FDPath("company.department.dep_name", "company.department.constitution"));
+		expected.put(new FDPath("company.department.constitution.employee"), new FDPath("company.department.constitution.employee.name", "company.department.constitution.employee.position"));
 		expected.put(new FDPath("company.department.@dno", "company.department.constitution.employee"), new FDPath("company.department.constitution.employee.position"));
 		expected.put(new FDPath("company.department.dep_name"), new FDPath("company.department.constitution.employee.@eno"));
 		HashMap<FDPath, FDPath> actual = XNFValidator.getSigma(parsedDTD, originalFds);

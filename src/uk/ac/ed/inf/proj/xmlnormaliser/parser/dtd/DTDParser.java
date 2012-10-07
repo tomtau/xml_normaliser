@@ -1,5 +1,6 @@
 package uk.ac.ed.inf.proj.xmlnormaliser.parser.dtd;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,13 +38,12 @@ public class DTDParser {
 	 */
 	public static String[] getTokens(String children) {
 		Matcher tokens = TOKEN_REGEX.matcher(children);
-		String[] result = new String[tokens.groupCount()];
-		int i = 0;
+		ArrayList<String> result = new ArrayList<String>();
 		while (tokens.find()) {
-			result[i] = tokens.group();
-			i++;
+			result.add(tokens.group());
 		}
-		return result;
+		String[] resultarray = new String[result.size()];
+		return result.toArray(resultarray);
 	}
 	
 	/**
