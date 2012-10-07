@@ -57,8 +57,16 @@ public class XNFValidator {
 		return false;
 	}
 
+	/**
+	 * Returns a textual representation of a tree path of an element 
+	 * @param pathSoFar - accumulator of string path
+	 * @param currentElement - the current element that is looked at 
+	 * @param seekedElement - the element whose path has to be returned
+	 * @param document - DTD
+	 * @return tree path
+	 */
 	public static String getPath(String pathSoFar, String currentElement, String seekedElement, DTD document) {
-		if (currentElement.equalsIgnoreCase(seekedElement)) {
+		if (currentElement.equalsIgnoreCase(seekedElement)) { //base case if we have it
 			if (pathSoFar.length() > 0) {
 				return pathSoFar + "." + seekedElement;
 			} else {
@@ -67,20 +75,20 @@ public class XNFValidator {
 		} else {
 			String[] children = DTDParser.getTokens(document.getElementTypeDefinition(currentElement));
 			for (String child : children) {
-				if (!child.equals("#PCDATA")) {
+				if (!child.equals("#PCDATA")) { // recurse only for nodes
 					String path;
 					if (pathSoFar.length() > 0) {
 						path = getPath(pathSoFar + "." + currentElement, child.replace("*", ""), seekedElement, document);
 					} else {
 						path = getPath(currentElement, child.replace("*", ""), seekedElement, document);
 					}
-					if (path.endsWith(seekedElement)) {
+					if (path.endsWith(seekedElement)) { // found it
 						return path;
 					}
 				}
 			}
 		}
-		return "";
+		return ""; // failed
 	}
 
 	/**
@@ -124,18 +132,24 @@ public class XNFValidator {
 		return sigma;
 	}
 
-	private static String greatestCommonPrefix(String a, String b) {
-		int minLength = Math.min(a.length(), b.length());
+	/**
+	 * Returns the greatest common prefix of 2 paths
+	 * @param pathA
+	 * @param pathB
+	 * @return the greatest common prefix 
+	 */
+	private static String greatestCommonPrefixPath(String pathA, String pathB) {
+		int minLen = Math.min(pathA.length(), pathB.length());
 		int lastDot = 0;
-		for (int i = 0; i < minLength; i++) {
-			if (a.charAt(i) == '.') {
+		for (int i = 0; i < minLen; i++) {
+			if (pathA.charAt(i) == '.') {
 				lastDot = i;
 			}
-			if (a.charAt(i) != b.charAt(i)) {
-				return a.substring(0, lastDot);
+			if (pathA.charAt(i) != pathB.charAt(i)) {
+				return pathA.substring(0, lastDot);
 			}
 		}
-		return a.substring(0, minLength);
+		return pathA.substring(0, minLen);
 	}	
 
 	/**
@@ -196,7 +210,7 @@ public class XNFValidator {
 				int p_index = 0;
 				for (String path : lhs) {
 					prefixes[p_index][0] = path;
-					prefixes[p_index][1] = greatestCommonPrefix(path, rhs);
+					prefixes[p_index][1] = greatestCommonPrefixPath(path, rhs);
 					LOGGER.debug(path + " greatest common: " + prefixes[p_index][1] );
 					p_index++;
 				}
