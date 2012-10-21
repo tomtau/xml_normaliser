@@ -10,7 +10,7 @@ package uk.ac.ed.inf.proj.xmlnormaliser.validator;
 public class TransformAction {
 
 	public enum ActionType {
-		DELETE_ATTRIBUTE,
+		MOVE_ATTRIBUTE,
 		ADD_ATTRIBUTE,
 		ADD_NODE,
 		DELETE_NODE,
