@@ -1,7 +1,7 @@
 package uk.ac.ed.inf.proj.xmlnormaliser.parser.fd;
 
 import java.io.File;
-import java.util.HashMap;
+import java.util.Map;
 
 import junit.framework.Assert;
 
@@ -19,7 +19,7 @@ import uk.ac.ed.inf.proj.xmlnormaliser.Utils;
 public class FDParserTestCompany {
 
 	/* the parsed FDs */
-	private static HashMap<FDPath, FDPath> parsed;
+	private static Map<FDPath, FDPath> parsed;
 
 	/* the test FD */
 	private static final File TEST_FILE = new File("tests-resources",

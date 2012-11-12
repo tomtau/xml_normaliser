@@ -2,6 +2,7 @@ package uk.ac.ed.inf.proj.xmlnormaliser.validator;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Map;
 
 import junit.framework.Assert;
 
@@ -24,7 +25,7 @@ import uk.ac.ed.inf.proj.xmlnormaliser.parser.fd.FDPath;
 public class XNFValidatorTestCompany {
 
 	/* the parsed objects */
-	private static HashMap<FDPath, FDPath> originalFds;
+	private static Map<FDPath, FDPath> originalFds;
 	private static DTD parsedDTD;
 
 	/* the test files */

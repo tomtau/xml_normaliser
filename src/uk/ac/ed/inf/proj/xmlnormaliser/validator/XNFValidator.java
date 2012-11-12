@@ -3,6 +3,7 @@ package uk.ac.ed.inf.proj.xmlnormaliser.validator;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -97,7 +98,7 @@ public class XNFValidator {
 	 * @param originalFD
 	 * @return a new set of XFDs
 	 */
-	public static HashMap<FDPath, FDPath> getSigma(DTD documentStructure, HashMap<FDPath, FDPath> originalFD) {
+	public static HashMap<FDPath, FDPath> getSigma(DTD documentStructure, Map<FDPath, FDPath> originalFD) {
 		HashMap<FDPath, FDPath> sigma = new HashMap<FDPath, FDPath>();
 		for (FDPath key : originalFD.keySet()) {
 			for (String rightHandSide : originalFD.get(key)) {
@@ -256,7 +257,7 @@ public class XNFValidator {
 	 * @param doc
 	 * @return true if in xnf
 	 */
-	public static boolean isXNF(FDPath leftHandSide, String rightHandSide, HashMap<FDPath, FDPath> originalXfds, DTD doc) {
+	public static boolean isXNF(FDPath leftHandSide, String rightHandSide, Map<FDPath, FDPath> originalXfds, DTD doc) {
 		String implied = rightHandSide.substring(0, rightHandSide.lastIndexOf('.'));
 		FDPath closure =  getClosure(leftHandSide, rightHandSide, getSigma(doc, originalXfds), doc);
 		return closure.contains(implied);

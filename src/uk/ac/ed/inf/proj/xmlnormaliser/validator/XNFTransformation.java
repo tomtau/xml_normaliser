@@ -1,8 +1,8 @@
 package uk.ac.ed.inf.proj.xmlnormaliser.validator;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import uk.ac.ed.inf.proj.xmlnormaliser.parser.dtd.DTD;
@@ -50,7 +50,7 @@ public class XNFTransformation {
 	 * @param doc
 	 * @return
 	 */
-	public static List<TransformAction> moveAttribute(FDPath leftHandSide, String rightHandSide, HashMap<FDPath, FDPath> originalXfds, DTD doc) {
+	public static List<TransformAction> moveAttribute(FDPath leftHandSide, String rightHandSide, Map<FDPath, FDPath> originalXfds, DTD doc) {
 		List<TransformAction> actions = new ArrayList<TransformAction>();
 		String[] q = getLongestLastElements(leftHandSide);
 		int qIndex = q.length - 1;
@@ -67,6 +67,7 @@ public class XNFTransformation {
 		qPath.append(attr);
 		String lastP = p[p.length - 2];
 		actions.add(new TransformAction(TransformAction.ActionType.MOVE_ATTRIBUTE, new Object[] {lastP, lastQ, attr}));
+		doc.moveAttribute(attr, lastP, lastQ);
 		
 		for (Entry<FDPath, FDPath> xfd : originalXfds.entrySet()) {
 			FDPath lhs = xfd.getKey();
@@ -88,6 +89,8 @@ public class XNFTransformation {
 			}
 			if (action) {
 				actions.add(new TransformAction(TransformAction.ActionType.CHANGE_XFD, new Object[] {xfd.getKey(), lhs, rhs}));
+				originalXfds.remove(xfd.getKey());
+				originalXfds.put(lhs, rhs);
 			}
 		}
 		
@@ -134,7 +137,7 @@ public class XNFTransformation {
 	 * @param doc
 	 * @return
 	 */
-	public static List<TransformAction> createNewET(int exCount, String namePrefix, FDPath leftHandSide, String rightHandSide, HashMap<FDPath, FDPath> originalXfds, DTD doc) {
+	public static List<TransformAction> createNewET(int exCount, String namePrefix, FDPath leftHandSide, String rightHandSide, Map<FDPath, FDPath> originalXfds, DTD doc) {
 		List<TransformAction> actions = new ArrayList<TransformAction>();
 		String[] q = getQElements(leftHandSide);
 		String lastQ = q[q.length - 1];
@@ -145,20 +148,34 @@ public class XNFTransformation {
 		}
 		
 		actions.add(new TransformAction(TransformAction.ActionType.ADD_NODE, new Object[] {lastQ, namePrefix + exCount}));
+		doc.addElement(namePrefix + exCount);
+		doc.addElementTypeDefinition(lastQ, "(" + doc.getElementTypeDefinition(lastQ) + ", " + namePrefix + exCount + ")");
 		String[][] keys = getPElements(leftHandSide);
+		StringBuilder docTypeDef = new StringBuilder("(");
 		for (int innerCount = 0; innerCount < keys.length; innerCount++) {
 			actions.add(new TransformAction(TransformAction.ActionType.ADD_NODE, new Object[] {namePrefix + exCount, (namePrefix + exCount) + innerCount}));
+			doc.addElement((namePrefix + exCount) + innerCount);
+			docTypeDef.append(namePrefix).append(exCount).append(innerCount).append(",");
 		}
+		docTypeDef.deleteCharAt(docTypeDef.length()-1).append(")");
+		doc.addElementTypeDefinition(namePrefix + exCount, docTypeDef.toString());
 		String[] p = rightHandSide.split("\\.");
+		
 		actions.add(new TransformAction(TransformAction.ActionType.DELETE_NODE, new Object[] {p[p.length - 3], p[p.length - 2]}));
 		actions.add(new TransformAction(TransformAction.ActionType.ADD_NODE, new Object[] {namePrefix + exCount, p[p.length - 2]}));
+		doc.addElementTypeDefinition(p[p.length - 3], doc.getElementTypeDefinition(p[p.length - 3]).replaceAll(p[p.length - 2], "").replaceAll("[(][\\s]*[,|\\|]", "(").replaceAll("[,|\\|][\\s]*[)]", ")"));
+		doc.addElementTypeDefinition(namePrefix + exCount, "(" + p[p.length - 2] + ")");
 		int innerCount = 0;
 		for (String[] pn : keys) {
 			actions.add(new TransformAction(TransformAction.ActionType.ADD_ATTRIBUTE, new Object[] {(namePrefix + exCount) + innerCount, pn[pn.length - 1]}));
+			doc.addElementAttribute((namePrefix + exCount) + innerCount, pn[pn.length - 1]);
 			innerCount++;
 		} 
 		actions.add(new TransformAction(TransformAction.ActionType.DELETE_XFD, new Object[] {leftHandSide, new FDPath(rightHandSide)}));
-		
+		originalXfds.get(leftHandSide).remove(rightHandSide);
+		if (originalXfds.get(leftHandSide).isEmpty()) {
+			originalXfds.remove(leftHandSide);
+		}
 		/* conversion of original XFDs - not yet implemented */
 		
 		String qp = qPath.toString();
@@ -171,6 +188,8 @@ public class XNFTransformation {
 				lhs1.add(current + "." + pn[pn.length - 1]);
 				lhs2.add(current + "." +pn[pn.length - 1]);
 			}
+			originalXfds.put(lhs1, new FDPath(current));
+			originalXfds.put(lhs2, new FDPath(qpN));
 			actions.add(new TransformAction(TransformAction.ActionType.ADD_XFD, new Object[] {lhs1, new FDPath(current)}));
 			actions.add(new TransformAction(TransformAction.ActionType.ADD_XFD, new Object[] {lhs2, new FDPath(qpN)}));
 			

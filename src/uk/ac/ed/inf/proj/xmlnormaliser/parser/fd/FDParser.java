@@ -1,6 +1,7 @@
 package uk.ac.ed.inf.proj.xmlnormaliser.parser.fd;
 
-import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A class with a static method to parse a text with XML functional dependencies expressed as:
@@ -24,8 +25,8 @@ public class FDParser {
 	 * @param document string to parse
 	 * @return the mapping of FDs (from a set of paths to a set of paths)
 	 */
-	public static HashMap<FDPath, FDPath> parse(String document) {
-		HashMap<FDPath, FDPath> result = new HashMap<FDPath, FDPath>();
+	public static Map<FDPath, FDPath> parse(String document) {
+		ConcurrentHashMap<FDPath, FDPath> result = new ConcurrentHashMap<FDPath, FDPath>();
 		String[] lines = document.replace(" ", "").split(XFD_SEPERATOR);
 		for (String line : lines) {
 			String[] xfd = line.split(DEPENDENCY_ARROW);
