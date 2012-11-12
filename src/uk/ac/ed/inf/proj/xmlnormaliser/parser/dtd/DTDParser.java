@@ -37,13 +37,17 @@ public class DTDParser {
 	 * @return array of tokens
 	 */
 	public static String[] getTokens(String children) {
-		Matcher tokens = TOKEN_REGEX.matcher(children);
-		ArrayList<String> result = new ArrayList<String>();
-		while (tokens.find()) {
-			result.add(tokens.group());
+		if (children.equals("EMPTY")) {
+			return new String[] {};
+		} else {
+			Matcher tokens = TOKEN_REGEX.matcher(children);
+			ArrayList<String> result = new ArrayList<String>();
+			while (tokens.find()) {
+				result.add(tokens.group());
+			}
+			String[] resultarray = new String[result.size()];
+			return result.toArray(resultarray);
 		}
-		String[] resultarray = new String[result.size()];
-		return result.toArray(resultarray);
 	}
 	
 	/**
