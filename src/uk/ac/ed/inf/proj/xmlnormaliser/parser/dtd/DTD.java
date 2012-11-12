@@ -83,7 +83,11 @@ public class DTD {
 	 * @return element type definition
 	 */
 	public String getElementTypeDefinition(String element) {
-		return P_mapping.get(element);
+		if (P_mapping.containsKey(element)) {
+			return P_mapping.get(element);
+		} else {
+			return "EMPTY";
+		}
 	}
 	
 	/**
@@ -123,6 +127,22 @@ public class DTD {
 	 */
 	public DTDType getType() {
 		return type;
+	}
+	
+	/**
+	 * Moves attribute
+	 * @param attribute
+	 * @param origin
+	 * @param destination
+	 */
+	public void moveAttribute(String attribute, String origin, String destination) {
+		HashSet<String> element_attributes = getElementAttributes(destination);
+		if (element_attributes == null) {
+			element_attributes = new HashSet<String>();
+		}
+		R_mapping.get(origin).remove(attribute);
+		element_attributes.add(attribute);
+		R_mapping.put(destination, element_attributes);
 	}
 
 	/**
