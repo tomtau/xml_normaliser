@@ -49,14 +49,14 @@ public class DTDParser {
 			return result.toArray(resultarray);
 		}
 	}
-	
+
 	/**
-	 * Parses the DTD string and returns an object
+	 * Extracts the main information from DTD string and returns an object
 	 * @param document string to parse
 	 * @return the DTD object containing all information
 	 * @throws DTDParserException 
-	 */
-	public static DTD parse(String document) throws DTDParserException {
+	 */	
+	private static DTD extractInformation(String document) {
 		DTD result = new DTD();
 		Matcher elements = ELEMENT_REGEX.matcher(document);
 		// find element definitions
@@ -79,6 +79,17 @@ public class DTDParser {
 			result.addAtribute(attributeLabel);
 			result.addElementAttribute(elementId, attributeLabel);
 		}
+		return result;
+	}
+	
+	/**
+	 * Parses an inner DTD string (with a doctype) and returns an object
+	 * @param document string to parse
+	 * @return the DTD object containing all information
+	 * @throws DTDParserException 
+	 */
+	public static DTD parse(String document) throws DTDParserException {
+		DTD result = extractInformation(document);
 		Matcher doctype = DOCTYPE_REGEX.matcher(document);
 		// find the root element
 		if (!doctype.find()) {
