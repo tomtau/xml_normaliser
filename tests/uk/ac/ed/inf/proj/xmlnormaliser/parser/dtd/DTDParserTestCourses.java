@@ -49,7 +49,7 @@ public class DTDParserTestCourses {
 	public void testAttributesMatches() {
 		Assert.assertEquals("Tests if the attributes match.", 2,
 				parsed.getAttributes().size());
-		for (String attribute : new String[] {"@cno", "@sid"}) {
+		for (String attribute : new String[] {"@cno", "@sno"}) {
 			Assert.assertTrue(parsed.getAttributes().contains(attribute));
 		}
 	}	
@@ -90,7 +90,7 @@ public class DTDParserTestCourses {
 		String actual = parsed.getElementTypeDefinition("student");
 		Assert.assertEquals("Tests the student element.", expected, actual);
 		HashSet<String> attributes = parsed.getElementAttributes("student");
-		Assert.assertTrue(attributes.contains("@sid"));
+		Assert.assertTrue(attributes.contains("@sno"));
 		Assert.assertEquals(attributes.size(), 1);		
 	}
 
