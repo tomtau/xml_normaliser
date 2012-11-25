@@ -9,7 +9,6 @@ import uk.ac.ed.inf.proj.xmlnormaliser.parser.dtd.DTD.DTDType;
 /**
  * A class with a static method to parse a DTD into a POJO
  * TODO: handle entities
- * TODO: parse without a doctype (root element as a parameter)
  * TODO: parse/represent element type definition better + detect the DTD type 
  * @author Tomas Tauber
  *
@@ -100,4 +99,16 @@ public class DTDParser {
 		return result;
 	}
 	
+	/**
+	 * Parses an external DTD string (with a provided root node) and returns an object
+	 * @param document string to parse
+	 * @return the DTD object containing all information
+	 * @throws DTDParserException 
+	 */
+	public static DTD parse(String document, String root) throws DTDParserException {
+		DTD result = extractInformation(document);
+		result.setRoot(root);
+		return result;
+	}
+
 }

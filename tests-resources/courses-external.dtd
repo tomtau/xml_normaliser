@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT courses ( course*) >
+<!ELEMENT course ( title, taken_by) >
+<!ATTLIST course cno CDATA #REQUIRED>
+<!ELEMENT title (#PCDATA)>
+<!ELEMENT taken_by ( student*)>
+<!ELEMENT student ( name, grade)>
+<!ATTLIST student sid CDATA #REQUIRED>
+<!ELEMENT name ( #PCDATA)>
+<!ELEMENT grade (#PCDATA) >
