@@ -54,10 +54,10 @@ public class TransformAction {
 	
 	/**
 	 * Returns a new DTD string
-	 * @param inputDTD
-	 * @param actions
-	 * @param transformedDTD
-	 * @return
+	 * @param inputDTD - starting DTD String
+	 * @param actions - actions to be applied
+	 * @param transformedDTD - the new DTD object
+	 * @return new DTD String
 	 */
 	public static String applyActions(String inputDTD, List<TransformAction> actions, DTD transformedDTD) {
 		inputDTD = inputDTD.replace("]>", "");
