@@ -164,7 +164,7 @@ public class XNFTransformation {
 		actions.add(new TransformAction(TransformAction.ActionType.DELETE_NODE, new Object[] {p[p.length - 3], p[p.length - 2]}));
 		actions.add(new TransformAction(TransformAction.ActionType.ADD_NODE, new Object[] {namePrefix + exCount, p[p.length - 2]}));
 		doc.addElementTypeDefinition(p[p.length - 3], doc.getElementTypeDefinition(p[p.length - 3]).replaceAll(p[p.length - 2], "").replaceAll("[(][\\s]*[,|\\|]", "(").replaceAll("[,|\\|][\\s]*[)]", ")"));
-		doc.addElementTypeDefinition(namePrefix + exCount, "(" + p[p.length - 2] + ")");
+		doc.addElementTypeDefinition(namePrefix + exCount, "(" + docTypeDef.toString() + "," + p[p.length - 2] + ")");
 		int innerCount = 0;
 		for (String[] pn : keys) {
 			actions.add(new TransformAction(TransformAction.ActionType.ADD_ATTRIBUTE, new Object[] {(namePrefix + exCount) + innerCount, pn[pn.length - 1]}));
