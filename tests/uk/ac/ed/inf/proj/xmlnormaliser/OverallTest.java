@@ -78,5 +78,8 @@ public class OverallTest {
 		runTest(0);
 	}
 
-
+	@Test
+	public void testCourses() throws FileNotFoundException, DTDParserException {
+		runTest(1);
+	}
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE courses [
+	<!ELEMENT courses ((course*), newET0)>
+	<!ELEMENT course ( title, taken_by) >
+		<!ATTLIST course cno CDATA #REQUIRED>
+	<!ELEMENT title (#PCDATA)>
+	<!ELEMENT taken_by ( student*)>
+	<!ELEMENT student (grade)>
+		<!ATTLIST student sno CDATA #REQUIRED>
+	<!ELEMENT name ( #PCDATA)>
+	<!ELEMENT grade (#PCDATA) >
+
+<!ELEMENT newET0 ((newET00),name)>
+<!ELEMENT newET00 EMPTY>
+<!ATTLIST newET00 @sno CDATA #REQUIRED>
+]>

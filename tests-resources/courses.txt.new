@@ -1,0 +1,4 @@
+courses.course; courses.course.taken_by.student.@sno;  -> courses.course.taken_by.student; 
+courses.newET0.newET00.@sno; courses.newET0;  -> courses.newET0.newET00; 
+courses; courses.newET0.newET00.@sno;  -> courses.newET0; 
+courses.course.@cno;  -> courses.course; 
