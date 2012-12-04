@@ -43,7 +43,7 @@ public class Main {
 	 * @param newXFDPath - output of the new XFD set
 	 * @throws FileNotFoundException
 	 */
-	private static void process(String originalDoc, DTD originalDTD,
+	static void process(String originalDoc, DTD originalDTD,
 			Map<FDPath, FDPath> xfds, String newDTDPath, String newXFDPath)
 			throws FileNotFoundException {
 		List<TransformAction> actions = new ArrayList<TransformAction>();
