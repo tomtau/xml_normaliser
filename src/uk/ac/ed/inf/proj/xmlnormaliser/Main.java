@@ -60,19 +60,19 @@ public class Main {
 								originalDTD)) {
 							LOGGER.info("XFD does not satisfy XNF");
 							invalid = true;
-							boolean createNewET = false;
+							boolean moveAttribute = true;
 							for (String lhs : xfd.getKey()) {
-								createNewET = createNewET
-										|| (lhs.indexOf('@') != -1);
+								moveAttribute = moveAttribute
+										&& (lhs.indexOf('@') == -1);
 							}
-							if (createNewET) {
+							if (moveAttribute) {
+								actions.addAll(XNFTransformation.moveAttribute(
+										xfd.getKey(), rhs, xfds, originalDTD));
+							} else {
 								actions.addAll(XNFTransformation.createNewET(
 										newETCount, "newET", xfd.getKey(), rhs,
 										xfds, originalDTD));
-								newETCount++;
-							} else {
-								actions.addAll(XNFTransformation.moveAttribute(
-										xfd.getKey(), rhs, xfds, originalDTD));
+								newETCount++;								
 							}
 							break;
 						} else {

@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
+
 import uk.ac.ed.inf.proj.xmlnormaliser.parser.dtd.DTD;
 
 
@@ -15,6 +17,8 @@ import uk.ac.ed.inf.proj.xmlnormaliser.parser.dtd.DTD;
  */
 public class TransformAction {
 
+	private static final Logger LOGGER = Logger.getLogger(TransformAction.class.getName());
+	
 	public enum ActionType {
 		MOVE_ATTRIBUTE,
 		ADD_ATTRIBUTE,

@@ -66,7 +66,7 @@ public class XNFTransformation {
 		String attr = p[p.length - 1];
 		qPath.append(attr);
 		String lastP = p[p.length - 2];
-		actions.add(new TransformAction(TransformAction.ActionType.MOVE_ATTRIBUTE, new Object[] {lastP, lastQ, attr}));
+		actions.add(new TransformAction(TransformAction.ActionType.MOVE_ATTRIBUTE, new Object[] {lastP, lastQ, attr.substring(1)}));
 		doc.moveAttribute(attr, lastP, lastQ);
 		
 		for (Entry<FDPath, FDPath> xfd : originalXfds.entrySet()) {
@@ -81,10 +81,10 @@ public class XNFTransformation {
 				action = true;
 			}
 			if (rhs.contains(rightHandSide)) {
-				lhs = new FDPath();
-				lhs.addAll(xfd.getKey());
-				lhs.remove(rightHandSide);
-				lhs.add(qPath.toString());
+				rhs = new FDPath();
+				rhs.addAll(xfd.getValue());
+				rhs.remove(rightHandSide);
+				rhs.add(qPath.toString());
 				action = true;
 			}
 			if (action) {
