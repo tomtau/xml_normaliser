@@ -1,0 +1,5 @@
+company.department.dep_name.newET0.newET01.@eno; company.department.dep_name; company.department.dep_name.newET0.newET01.@age;  -> company.department.dep_name.newET0; 
+company.department.dep_name.newET0; company.department.dep_name.newET0.newET01.@eno; company.department.dep_name.newET0.newET01.@age;  -> company.department.dep_name.newET0.newET01; 
+company.department.@dno; company.department.constitution.employee;  -> company.department.constitution.employee.position; 
+company.department.dep_name.newET0.newET00.@age; company.department.dep_name; company.department.dep_name.newET0.newET00.@eno;  -> company.department.dep_name.newET0; 
+company.department.dep_name.newET0; company.department.dep_name.newET0.newET00.@age; company.department.dep_name.newET0.newET00.@eno;  -> company.department.dep_name.newET0.newET00; 

@@ -160,11 +160,15 @@ public class XNFTransformation {
 		docTypeDef.deleteCharAt(docTypeDef.length()-1).append(")");
 		doc.addElementTypeDefinition(namePrefix + exCount, docTypeDef.toString());
 		String[] p = rightHandSide.split("\\.");
-		
-		actions.add(new TransformAction(TransformAction.ActionType.DELETE_NODE, new Object[] {p[p.length - 3], p[p.length - 2]}));
-		actions.add(new TransformAction(TransformAction.ActionType.ADD_NODE, new Object[] {namePrefix + exCount, p[p.length - 2]}));
-		doc.addElementTypeDefinition(p[p.length - 3], doc.getElementTypeDefinition(p[p.length - 3]).replaceAll(p[p.length - 2], "").replaceAll("[(][\\s]*[,|\\|]", "(").replaceAll("[,|\\|][\\s]*[)]", ")"));
-		doc.addElementTypeDefinition(namePrefix + exCount, "(" + docTypeDef.toString() + "," + p[p.length - 2] + ")");
+		if (p[p.length - 1].charAt(0) != '@') {
+			actions.add(new TransformAction(TransformAction.ActionType.DELETE_NODE, new Object[] {p[p.length - 3], p[p.length - 2]}));
+			actions.add(new TransformAction(TransformAction.ActionType.ADD_NODE, new Object[] {namePrefix + exCount, p[p.length - 2]}));
+			doc.addElementTypeDefinition(p[p.length - 3], doc.getElementTypeDefinition(p[p.length - 3]).replaceAll(p[p.length - 2], "").replaceAll("[(][\\s]*[,|\\|]", "(").replaceAll("[,|\\|][\\s]*[)]", ")"));
+			doc.addElementTypeDefinition(namePrefix + exCount, "(" + docTypeDef.toString() + "," + p[p.length - 2] + ")");
+		} else {
+			actions.add(new TransformAction(TransformAction.ActionType.MOVE_ATTRIBUTE, new Object[] {p[p.length - 2], namePrefix + exCount, p[p.length - 1].substring(1)}));
+			doc.moveAttribute(p[p.length - 1], p[p.length - 2], namePrefix + exCount);
+		}
 		int innerCount = 0;
 		for (String[] pn : keys) {
 			actions.add(new TransformAction(TransformAction.ActionType.ADD_ATTRIBUTE, new Object[] {(namePrefix + exCount) + innerCount, pn[pn.length - 1].substring(1)}));

@@ -48,7 +48,7 @@ public class XNFTransformationTestCourses {
 	
 	@Test
 	public void testCreateNewET() {
-		List<TransformAction> actions = XNFTransformation.createNewET(0, "newET", new FDPath("courses", "courses.course.taken_by.student.@sno"), "courses.course.taken_by.student.name.@#PCDATA", originalFds, parsedDTD);
+		List<TransformAction> actions = XNFTransformation.createNewET(0, "newET", new FDPath("courses", "courses.course.taken_by.student.@sno"), "courses.course.taken_by.student.name.#PCDATA", originalFds, parsedDTD);
 		Assert.assertEquals(8, actions.size());
 		Assert.assertEquals(TransformAction.ActionType.ADD_NODE, actions.get(0).getType());
 		Assert.assertEquals("courses", (String) actions.get(0).getParameters()[0]);
@@ -72,7 +72,7 @@ public class XNFTransformationTestCourses {
 		
 		Assert.assertEquals(TransformAction.ActionType.DELETE_XFD, actions.get(5).getType());
 		Assert.assertEquals(new FDPath("courses", "courses.course.taken_by.student.@sno"), (FDPath) actions.get(5).getParameters()[0]);
-		Assert.assertEquals(new FDPath("courses.course.taken_by.student.name.@#PCDATA"), (FDPath) actions.get(5).getParameters()[1]);
+		Assert.assertEquals(new FDPath("courses.course.taken_by.student.name.#PCDATA"), (FDPath) actions.get(5).getParameters()[1]);
 		
 		Assert.assertEquals(TransformAction.ActionType.ADD_XFD, actions.get(6).getType());
 		Assert.assertEquals(new FDPath("courses.newET0", "courses.newET0.newET00.@sno"), (FDPath) actions.get(6).getParameters()[0]);
