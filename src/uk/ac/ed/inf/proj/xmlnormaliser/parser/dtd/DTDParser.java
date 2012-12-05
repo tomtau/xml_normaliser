@@ -8,6 +8,7 @@ import uk.ac.ed.inf.proj.xmlnormaliser.parser.dtd.DTD.DTDType;
 
 /**
  * A class with a static method to parse a DTD into a POJO
+ * TODO: multiple attributes
  * TODO: handle entities
  * TODO: parse/represent element type definition better + detect the DTD type 
  * @author Tomas Tauber
