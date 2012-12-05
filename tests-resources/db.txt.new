@@ -1,0 +1,4 @@
+db.conf.issue;  -> db.conf.issue.@year; 
+db.conf.issue; db.conf.issue.inproceedings.title.#PCDATA;  -> db.conf.issue.inproceedings; 
+db.conf.title.#PCDATA;  -> db.conf; 
+db.conf.issue.inproceedings.@key;  -> db.conf.issue.inproceedings; 
