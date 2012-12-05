@@ -82,6 +82,10 @@ public class TransformAction {
 					inputDTD += "<!ELEMENT " + (String) action.parameters[0] + " " + transformedDTD.getElementTypeDefinition((String) action.parameters[0]) + ">\n";
 					inputDTD += "<!ELEMENT " + (String) action.parameters[1] + " " + transformedDTD.getElementTypeDefinition((String) action.parameters[1]) + ">\n";
 				}
+				parent = Pattern.compile("<!ELEMENT\\s+" + (String) action.parameters[1] + "\\s+[^>]+").matcher(inputDTD);
+				if (!parent.find()) {
+					inputDTD += "<!ELEMENT " + (String) action.parameters[1] + " " + transformedDTD.getElementTypeDefinition((String) action.parameters[1]) + ">\n";
+				}
 				break;
 			case DELETE_NODE:
 				parent = Pattern.compile("<!ELEMENT\\s+" + (String) action.parameters[0] + "\\s+[^>]+").matcher(inputDTD);

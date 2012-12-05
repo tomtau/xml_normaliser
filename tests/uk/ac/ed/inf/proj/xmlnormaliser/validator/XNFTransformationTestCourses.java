@@ -68,7 +68,7 @@ public class XNFTransformationTestCourses {
 		
 		Assert.assertEquals(TransformAction.ActionType.ADD_ATTRIBUTE, actions.get(4).getType());
 		Assert.assertEquals("newET00", (String) actions.get(4).getParameters()[0]);
-		Assert.assertEquals("@sno", (String) actions.get(4).getParameters()[1]);
+		Assert.assertEquals("sno", (String) actions.get(4).getParameters()[1]);
 		
 		Assert.assertEquals(TransformAction.ActionType.DELETE_XFD, actions.get(5).getType());
 		Assert.assertEquals(new FDPath("courses", "courses.course.taken_by.student.@sno"), (FDPath) actions.get(5).getParameters()[0]);

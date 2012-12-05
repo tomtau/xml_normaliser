@@ -167,7 +167,7 @@ public class XNFTransformation {
 		doc.addElementTypeDefinition(namePrefix + exCount, "(" + docTypeDef.toString() + "," + p[p.length - 2] + ")");
 		int innerCount = 0;
 		for (String[] pn : keys) {
-			actions.add(new TransformAction(TransformAction.ActionType.ADD_ATTRIBUTE, new Object[] {(namePrefix + exCount) + innerCount, pn[pn.length - 1]}));
+			actions.add(new TransformAction(TransformAction.ActionType.ADD_ATTRIBUTE, new Object[] {(namePrefix + exCount) + innerCount, pn[pn.length - 1].substring(1)}));
 			doc.addElementAttribute((namePrefix + exCount) + innerCount, pn[pn.length - 1]);
 			innerCount++;
 		} 
