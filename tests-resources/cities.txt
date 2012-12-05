@@ -1,0 +1,3 @@
+cities.city.cname.#PCDATA -> cities.city
+cities.city.block -> cities.city.block.street.@postcode
+cities.city.block; cities.city.block.street.sname.#PCDATA -> cities.city.block.street

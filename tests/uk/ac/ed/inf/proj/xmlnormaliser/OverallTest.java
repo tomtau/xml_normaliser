@@ -26,7 +26,7 @@ public class OverallTest {
 
 	/* the test DTD */
 	private static final String TEST_ROOT = "tests-resources";
-	private static final String[] TESTS = {"company", "courses", "db", "company2"};
+	private static final String[] TESTS = {"company", "courses", "db", "company2", "cities"};
 	
 	private static final File OUTPUT_DTD = new File("temp.dtd");
 	private static final File OUTPUT_XFD = new File("temp.txt");
@@ -92,5 +92,10 @@ public class OverallTest {
 	public void testCompany2() throws FileNotFoundException, DTDParserException {
 		runTest(3);
 	}	
+
+	@Test
+	public void testCities() throws FileNotFoundException, DTDParserException {
+		runTest(4);
+	}		
 	
 }
