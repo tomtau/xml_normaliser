@@ -174,16 +174,65 @@ public class XNFTransformation {
 			actions.add(new TransformAction(TransformAction.ActionType.ADD_ATTRIBUTE, new Object[] {(namePrefix + exCount) + innerCount, pn[pn.length - 1].substring(1)}));
 			doc.addElementAttribute((namePrefix + exCount) + innerCount, pn[pn.length - 1]);
 			innerCount++;
-		} 
+		}
+		/* delete anomalous xfd */
 		actions.add(new TransformAction(TransformAction.ActionType.DELETE_XFD, new Object[] {leftHandSide, new FDPath(rightHandSide)}));
 		originalXfds.get(leftHandSide).remove(rightHandSide);
 		if (originalXfds.get(leftHandSide).isEmpty()) {
 			originalXfds.remove(leftHandSide);
 		}
-		/* conversion of original XFDs - not yet implemented */
-		
+
+		/* conversion of original XFDs - implemented, not properly tested */
 		String qp = qPath.toString();
-		String qpN = qp + "." + namePrefix + exCount;
+		String qpN = qp + "." + namePrefix + exCount;		
+		
+		for (Entry<FDPath, FDPath> xfd : originalXfds.entrySet()) {
+			FDPath lhs = (FDPath) xfd.getKey().clone();
+			FDPath rhs = (FDPath) xfd.getValue().clone();
+			boolean action = false;
+			if (lhs.contains(rightHandSide)) {
+				lhs.remove(rightHandSide);
+				lhs.add(qpN + "." + p[p.length - 1]);
+				action = true;
+			}
+			if (rhs.contains(rightHandSide)) {
+				rhs.remove(rightHandSide);
+				rhs.add(qpN + "." + p[p.length - 1]);
+				action = true;
+			}
+			for (String pi : leftHandSide) {
+				if (!pi.equalsIgnoreCase(qp)) {
+					String attr = pi.substring(pi.lastIndexOf('.'));
+					if (lhs.contains(pi)) {
+						for (innerCount = 0; innerCount < keys.length; innerCount++) {
+							String current = qpN + "." + (namePrefix + exCount) + innerCount;
+							if (doc.getElementAttributes((namePrefix + exCount) + innerCount).contains(attr)) {
+								lhs.remove(pi);
+								lhs.add(current + "." + attr);
+								action = true;
+							}
+						}
+					}
+					if (rhs.contains(pi)) {
+						for (innerCount = 0; innerCount < keys.length; innerCount++) {
+							String current = qpN + "." + (namePrefix + exCount) + innerCount;
+							if (doc.getElementAttributes((namePrefix + exCount) + innerCount).contains(attr)) {
+								rhs.remove(pi);
+								rhs.add(current + "." + attr);
+								action = true;
+							}
+						}
+					}					
+				}
+			}
+			if (action) {
+				actions.add(new TransformAction(TransformAction.ActionType.CHANGE_XFD, new Object[] {xfd.getKey(), lhs, rhs}));
+				originalXfds.remove(xfd.getKey());
+				originalXfds.put(lhs, rhs);
+			}
+		}
+		
+		/* adding new dependencies */
 		for (innerCount = 0; innerCount < keys.length; innerCount++) {
 			FDPath lhs1 = new FDPath(qpN);
 			FDPath lhs2 = new FDPath(qp);
