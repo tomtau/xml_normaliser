@@ -1,26 +1,29 @@
-declare function local:transform($input as item()*) as item()* {
+declare function local:transform($nodefilter as function(element()) as xs:boolean, $nodeadd as function(element()) as item()*, $input as item()*) as item()* {
 for $node in $input
    return 
       typeswitch($node)
         case element()
          return
-          if (name($node) != 'name') then
+          if ($nodefilter($node)) then
               element {name($node)} {
-                if (name($node) = 'courses') then
-                    for $na in distinct-values($node/course/taken_by/student/name/text()) return element {'newET0'} {  for $nu in distinct-values($node/course/taken_by/student[name/text() = $na]/@sno) return
-                  element {'newET00'} {attribute {'sno'} {$nu}},
-                  element {'name'} {$na}
-                  }             
-                else (),
+                $nodeadd($node),
                 for $att in $node/@*
                       return attribute {name($att)} {$att}
                 ,
                 for $child in $node
-                   return local:transform($child/node())
+                   return local:transform($nodefilter, $nodeadd, $child/node())
  
               }
           else ()
         default return $node
 };
 
-local:transform(doc("test.xml")/courses)
+let $f := function($node as element()) as xs:boolean {name($node) != 'name'},
+	$g := function($node as element()) as item()* {if (name($node) = 'courses') then
+                    for $na in distinct-values($node/course/taken_by/student/name/text()) return element {'newET0'} {  for $nu in distinct-values($node/course/taken_by/student[name/text() = $na]/@sno) return
+                  element {'newET00'} {attribute {'sno'} {$nu}},
+                  element {'name'} {$na}
+                  }             
+                else ()}
+  return
+	local:transform($f, $g, doc("test.xml")/courses)
