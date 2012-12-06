@@ -149,13 +149,13 @@ public class XNFTransformation {
 		
 		actions.add(new TransformAction(TransformAction.ActionType.ADD_NODE, new Object[] {lastQ, namePrefix + exCount}));
 		doc.addElement(namePrefix + exCount);
-		doc.addElementTypeDefinition(lastQ, "(" + doc.getElementTypeDefinition(lastQ) + ", " + namePrefix + exCount + ")");
+		doc.addElementTypeDefinition(lastQ, "(" + doc.getElementTypeDefinition(lastQ) + ", " + namePrefix + exCount + "*)");
 		String[][] keys = getPElements(leftHandSide);
 		StringBuilder docTypeDef = new StringBuilder("(");
 		for (int innerCount = 0; innerCount < keys.length; innerCount++) {
 			actions.add(new TransformAction(TransformAction.ActionType.ADD_NODE, new Object[] {namePrefix + exCount, (namePrefix + exCount) + innerCount}));
 			doc.addElement((namePrefix + exCount) + innerCount);
-			docTypeDef.append(namePrefix).append(exCount).append(innerCount).append(",");
+			docTypeDef.append(namePrefix).append(exCount).append(innerCount).append("*,");
 		}
 		docTypeDef.deleteCharAt(docTypeDef.length()-1).append(")");
 		doc.addElementTypeDefinition(namePrefix + exCount, docTypeDef.toString());
