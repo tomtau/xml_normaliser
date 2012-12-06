@@ -1,21 +1,25 @@
-<db>
-{let $root := doc("test.xml")/db
-for $co in $root/conf
-return <conf>
-  <title>{$co/title/text()}</title>
-  {for $is in $co/issue
-  let $value := $is/inproceedings[position() = 1]/@year
-  return <issue year="{$value}">
-  {for $in in $is/inproceedings
-    return <inproceedings key="{$in/@key}" pages="{$in/@pages}">
-    { for $au in $in/author
-      return<author> {$au/text()} </author>
-      }
-      <title>{$in/title/text()}</title>
-    </inproceedings>
-  }
-  </issue>
-  }
-</conf>
-}
-</db>
+declare function local:transform($input as item()*) as item()* {
+for $node in $input
+   return 
+      typeswitch($node)
+        case element()
+           return
+              element {name($node)} {
+                if (name($node) = 'issue') then attribute {'year'} {$node/inproceedings[position() = 1]/@year}
+                else (),
+
+                for $att in $node/@*
+                   return
+                      if (name($node) != 'inproceedings' or name($att) != 'year') then
+                        attribute {name($att)} {$att}
+                      else ()
+                   
+                ,
+                for $child in $node
+                   return local:transform($child/node())
+ 
+              }
+        default return $node
+};
+
+local:transform(doc("test.xml")/db)
