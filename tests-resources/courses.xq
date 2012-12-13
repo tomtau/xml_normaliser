@@ -18,12 +18,12 @@ for $node in $input
         default return $node
 };
 
-let $f := function($node as element()) as xs:boolean {name($node) != 'name'},
-	$g := function($node as element()) as item()* {if (name($node) = 'courses') then
+let $nf1 := function($node as element()) as xs:boolean {name($node) != 'name'},
+	$na1 := function($node as element()) as item()* {if (name($node) = 'courses') then
                     for $na in distinct-values($node/course/taken_by/student/name/text()) return element {'newET0'} {  for $nu in distinct-values($node/course/taken_by/student[name/text() = $na]/@sno) return
                   element {'newET00'} {attribute {'sno'} {$nu}},
                   element {'name'} {$na}
                   }             
                 else ()}
   return
-	local:transform($f, $g, doc("test.xml")/courses)
+	local:transform($nf1, $na1, doc("test.xml")/courses)
