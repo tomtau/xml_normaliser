@@ -1,4 +1,4 @@
-declare function local:transform($nodefilter as function(element()) as xs:boolean, $nodeadd as function(element()) as item()*, $input as item()*) as item()* {
+declare function local:transform($nodefilter as function(element()) as xs:boolean, $nodeadd as function(element()) as item()*, $attrfilter as function(element(), attribute()) as attribute()*, $attradd as function(element()) as attribute()*, $input as item()*) as item()* {
 for $node in $input
    return 
       typeswitch($node)
@@ -7,11 +7,12 @@ for $node in $input
           if ($nodefilter($node)) then
               element {name($node)} {
                 $nodeadd($node),
+                $attradd($node),
                 for $att in $node/@*
-                      return attribute {name($att)} {$att}
+                    return $attrfilter($node, $att)
                 ,
                 for $child in $node
-                   return local:transform($nodefilter, $nodeadd, $child/node())
+                   return local:transform($nodefilter, $nodeadd, $attrfilter, $attradd, $child/node())
  
               }
           else ()
@@ -24,6 +25,9 @@ let $nf1 := function($node as element()) as xs:boolean {name($node) != 'name'},
                   element {'newET00'} {attribute {'sno'} {$nu}},
                   element {'name'} {$na}
                   }             
-                else ()}
+                else ()},
+  $af1 := function($node as element(), $att as attribute()) as attribute()* {
+    attribute {name($att)} {$att}},
+  $aa1 := function($node as element()) as attribute()* { () }
   return
-	local:transform($nf1, $na1, doc("test.xml")/courses)
+	local:transform($nf1, $na1, $af1, $aa1, doc("test.xml")/courses)
