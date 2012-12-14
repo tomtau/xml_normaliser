@@ -23,7 +23,7 @@ let
     $nf1 := function($node as element()) as xs:boolean {xs:boolean('true')},
     $na1 := function($node as element()) as item()* {()},
     $af1 := function($node as element(), $att as attribute()) as attribute()* {
-            if (name($node) != 'inproceedings' or name($att) != 'year') then
+            if (name($node) != 'inproceedings' and name($att) != 'year') then
             	attribute {name($att)} {$att}
             else ()
             },    

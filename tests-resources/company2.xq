@@ -30,7 +30,7 @@ let $nf1 := function($node as element()) as xs:boolean {xs:boolean('true')},
                  } 
                 else ()},
   $af1 := function($node as element(), $att as attribute()) as attribute()* {
-    if (name($node) != 'constitution' or name($att) != 'cno' ) then
+    if (name($node) != 'constitution' and name($att) != 'cno' ) then
       attribute {name($att)} {$att}
     else ()},
   $aa1 := function($node as element()) as attribute()* { () }
