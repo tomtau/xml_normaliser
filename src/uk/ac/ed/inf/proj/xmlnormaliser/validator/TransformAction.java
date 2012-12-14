@@ -23,10 +23,7 @@ public class TransformAction {
 		MOVE_ATTRIBUTE,
 		ADD_ATTRIBUTE,
 		ADD_NODE,
-		DELETE_NODE,
-		CHANGE_XFD,
-		DELETE_XFD,
-		ADD_XFD
+		DELETE_NODE
 	}
 	
 	private ActionType type;

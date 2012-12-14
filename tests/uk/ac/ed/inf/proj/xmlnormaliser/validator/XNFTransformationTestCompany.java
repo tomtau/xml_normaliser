@@ -49,17 +49,11 @@ public class XNFTransformationTestCompany {
 	@Test
 	public void testMoveAttribute() {
 		List<TransformAction> actions = XNFTransformation.moveAttribute(new FDPath("company.department.dep_name"), "company.department.constitution.employee.@eno", originalFds, parsedDTD);
-		Assert.assertEquals(2, actions.size());
+		Assert.assertEquals(1, actions.size());
 		Assert.assertEquals(TransformAction.ActionType.MOVE_ATTRIBUTE, actions.get(0).getType());
 		Assert.assertEquals("employee", (String) actions.get(0).getParameters()[0]);
 		Assert.assertEquals("dep_name", (String) actions.get(0).getParameters()[1]);
-		Assert.assertEquals("eno", (String) actions.get(0).getParameters()[2]);
-		
-		
-		Assert.assertEquals(TransformAction.ActionType.CHANGE_XFD, actions.get(1).getType());
-		Assert.assertEquals(new FDPath("company.department.dep_name"), (FDPath) actions.get(1).getParameters()[0]);
-		Assert.assertEquals(new FDPath("company.department.dep_name"), (FDPath) actions.get(1).getParameters()[1]);
-		Assert.assertEquals(new FDPath("company.department.dep_name.@eno"), (FDPath) actions.get(1).getParameters()[2]);	
+		Assert.assertEquals("eno", (String) actions.get(0).getParameters()[2]);	
 		
 	}
 	

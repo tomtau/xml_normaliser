@@ -88,7 +88,6 @@ public class XNFTransformation {
 				action = true;
 			}
 			if (action) {
-				actions.add(new TransformAction(TransformAction.ActionType.CHANGE_XFD, new Object[] {xfd.getKey(), lhs, rhs}));
 				originalXfds.remove(xfd.getKey());
 				originalXfds.put(lhs, rhs);
 			}
@@ -176,7 +175,6 @@ public class XNFTransformation {
 			innerCount++;
 		}
 		/* delete anomalous xfd */
-		actions.add(new TransformAction(TransformAction.ActionType.DELETE_XFD, new Object[] {leftHandSide, new FDPath(rightHandSide)}));
 		originalXfds.get(leftHandSide).remove(rightHandSide);
 		if (originalXfds.get(leftHandSide).isEmpty()) {
 			originalXfds.remove(leftHandSide);
@@ -226,7 +224,6 @@ public class XNFTransformation {
 				}
 			}
 			if (action) {
-				actions.add(new TransformAction(TransformAction.ActionType.CHANGE_XFD, new Object[] {xfd.getKey(), lhs, rhs}));
 				originalXfds.remove(xfd.getKey());
 				originalXfds.put(lhs, rhs);
 			}
@@ -243,8 +240,6 @@ public class XNFTransformation {
 			}
 			originalXfds.put(lhs1, new FDPath(current));
 			originalXfds.put(lhs2, new FDPath(qpN));
-			actions.add(new TransformAction(TransformAction.ActionType.ADD_XFD, new Object[] {lhs1, new FDPath(current)}));
-			actions.add(new TransformAction(TransformAction.ActionType.ADD_XFD, new Object[] {lhs2, new FDPath(qpN)}));
 			
 		}
 		
