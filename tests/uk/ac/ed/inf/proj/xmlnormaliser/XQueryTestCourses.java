@@ -1,8 +1,10 @@
 package uk.ac.ed.inf.proj.xmlnormaliser;
 
 import java.io.File;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 import junit.framework.Assert;
 
@@ -52,10 +54,23 @@ public class XQueryTestCourses {
 	}	
 	
 	@Test
+	public void testPurgeCourses() throws Exception {
+		StringBuilder result = new StringBuilder();
+		Queue<String> attrF = new LinkedList<String>();
+		Queue<String> attrA = new LinkedList<String>();
+		Queue<String> nodeF = new LinkedList<String>();
+		nodeF.add("name($node) != 'name'");
+		String output = XQueryGenerator.purge("doc(\"test.xml\")/courses", 0, result, attrF, attrA, nodeF, "na0");
+		Assert.assertEquals("local:transform($nf0, $na0, $afi, $aai, doc(\"test.xml\")/courses)", output);
+		Assert.assertTrue(nodeF.isEmpty());
+		Assert.assertEquals(",$nf1 := function($node as element()) as xs:boolean {name($node) != 'name'}\n", result.toString());
+	}
+	
+	@Test
 	public void testXQueryCreateNewET() throws Exception {
 		String expected = Utils.readFile(TEST_FILE_XQ);
 		List<TransformAction> actions = XNFTransformation.createNewET(0, "newET", new FDPath("courses", "courses.course.taken_by.student.@sno"), "courses.course.taken_by.student.name.#PCDATA", originalFds, parsedDTD);
-		Assert.assertEquals(expected, XQueryGenerator.applyActions(actions, parsedDTD));
+		Assert.assertEquals(expected, XQueryGenerator.applyActions("test.xml", actions, parsedDTD));
 		
 	}
 	

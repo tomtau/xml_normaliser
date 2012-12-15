@@ -1,8 +1,10 @@
 package uk.ac.ed.inf.proj.xmlnormaliser;
 
 import java.io.File;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 import junit.framework.Assert;
 
@@ -49,13 +51,36 @@ public class XQueryTestDB {
 		BasicConfigurator.configure();
 		originalFds = FDParser.parse(Utils.readFile(TEST_FILE_FD));
 		parsedDTD = DTDParser.parse(Utils.readFile(TEST_FILE_DTD));
-	}	
+	}
 	
 	@Test
-	public void testXQueryCreateNewET() throws Exception {
+	public void testPurgeDB() throws Exception {
+		StringBuilder result = new StringBuilder();
+		Queue<String> attrF = new LinkedList<String>();
+		attrF.add("(name($node) != 'inproceedings' and name($att) != 'year')");
+		Queue<String> attrA = new LinkedList<String>();
+		attrA.add("if (name($node) = 'issue') then attribute {'year'} {$node/inproceedings[position() = 1]/@year}");
+		Queue<String> nodeF = new LinkedList<String>();
+		String output = XQueryGenerator.purge("local:transform($nf1, $na1, $af1, $aa1, doc(\"test.xml\")/db)/db", 0, result, attrF, attrA, nodeF, "na0");
+		Assert.assertEquals("local:transform($nfi, $nai, $af0, $aa0, local:transform($nf1, $na1, $af1, $aa1, doc(\"test.xml\")/db)/db)", output);
+		Assert.assertTrue(attrF.isEmpty());
+		Assert.assertTrue(attrA.isEmpty());
+		Assert.assertEquals(",$af0 := function($node as element(), $att as attribute()) as attribute()* {\n"
+            + "if (name($node) != 'inproceedings' and name($att) != 'year') then\n"
+            + "attribute {name($att)} {$att}\n"
+            + "else ()\n"
+            + "}\n"    
+            + ",$aa0 := function($node as element()) as attribute()* {\n"
+			+ "if (name($node) = 'issue') then attribute {'year'} {$node/inproceedings[position() = 1]/@year}\n"
+            + "else ()\n"
+            +"}\n", result.toString());
+	}
+	
+	@Test
+	public void testXQueryMoveAttribute() throws Exception {
 		String expected = Utils.readFile(TEST_FILE_XQ);
 		List<TransformAction> actions = XNFTransformation.moveAttribute(new FDPath("db.conf.issue"), "db.conf.issue.inproceedings.@year", originalFds, parsedDTD);
-		Assert.assertEquals(expected, XQueryGenerator.applyActions(actions, parsedDTD));
+		Assert.assertEquals(expected, XQueryGenerator.applyActions("test.xml", actions, parsedDTD));
 		
 	}
 	
