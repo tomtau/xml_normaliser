@@ -17,7 +17,7 @@ public class TransformAction {
 
 	public enum ActionType {
 		MOVE_ATTRIBUTE,
-		ADD_ATTRIBUTE,
+		COPY_ATTRIBUTE,
 		ADD_NODE,
 		MOVE_NODE
 	}
@@ -64,8 +64,8 @@ public class TransformAction {
 				inputDTD = inputDTD.replaceFirst("<!ATTLIST[\\s]+" + (String) action.parameters[0] + "[\\s]+" + (String) action.parameters[2], 
 						"<!ATTLIST " + (String) action.parameters[1] + " " + (String) action.parameters[2]);
 				break;
-			case ADD_ATTRIBUTE:
-				inputDTD += "<!ATTLIST " +  (String) action.parameters[0] + " " + (String) action.parameters[1] + " CDATA #REQUIRED>\n";
+			case COPY_ATTRIBUTE:
+				inputDTD += "<!ATTLIST " +  (String) action.parameters[1] + " " + (String) action.parameters[2] + " CDATA #REQUIRED>\n";
 				break;
 			case ADD_NODE:
 				Matcher parent = Pattern.compile("<!ELEMENT\\s+" + (String) action.parameters[0] + "\\s+[^>]+").matcher(inputDTD);

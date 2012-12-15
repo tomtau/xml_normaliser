@@ -63,9 +63,10 @@ public class XNFTransformationTestCourses {
 		Assert.assertEquals("newET0", (String) actions.get(2).getParameters()[1]);
 		Assert.assertEquals("name", (String) actions.get(2).getParameters()[2]);				
 		
-		Assert.assertEquals(TransformAction.ActionType.ADD_ATTRIBUTE, actions.get(3).getType());
-		Assert.assertEquals("newET00", (String) actions.get(3).getParameters()[0]);
-		Assert.assertEquals("sno", (String) actions.get(3).getParameters()[1]);
+		Assert.assertEquals(TransformAction.ActionType.COPY_ATTRIBUTE, actions.get(3).getType());
+		Assert.assertEquals("student", (String) actions.get(3).getParameters()[0]);
+		Assert.assertEquals("newET00", (String) actions.get(3).getParameters()[1]);
+		Assert.assertEquals("sno", (String) actions.get(3).getParameters()[2]);
 		
 	}
 	
