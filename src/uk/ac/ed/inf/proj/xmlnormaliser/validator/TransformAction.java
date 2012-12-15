@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
-
 import uk.ac.ed.inf.proj.xmlnormaliser.parser.dtd.DTD;
 
 
@@ -17,13 +15,11 @@ import uk.ac.ed.inf.proj.xmlnormaliser.parser.dtd.DTD;
  */
 public class TransformAction {
 
-	private static final Logger LOGGER = Logger.getLogger(TransformAction.class.getName());
-	
 	public enum ActionType {
 		MOVE_ATTRIBUTE,
 		ADD_ATTRIBUTE,
 		ADD_NODE,
-		DELETE_NODE
+		MOVE_NODE
 	}
 	
 	private ActionType type;
@@ -84,7 +80,7 @@ public class TransformAction {
 					inputDTD += "<!ELEMENT " + (String) action.parameters[1] + " " + transformedDTD.getElementTypeDefinition((String) action.parameters[1]) + ">\n";
 				}
 				break;
-			case DELETE_NODE:
+			case MOVE_NODE:
 				parent = Pattern.compile("<!ELEMENT\\s+" + (String) action.parameters[0] + "\\s+[^>]+").matcher(inputDTD);
 				if (parent.find()) {
 					inputDTD =parent.replaceFirst("<!ELEMENT " + (String) action.parameters[0] + " " + transformedDTD.getElementTypeDefinition((String) action.parameters[0]));

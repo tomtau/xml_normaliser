@@ -160,8 +160,7 @@ public class XNFTransformation {
 		doc.addElementTypeDefinition(namePrefix + exCount, docTypeDef.toString());
 		String[] p = rightHandSide.split("\\.");
 		if (p[p.length - 1].charAt(0) != '@') {
-			actions.add(new TransformAction(TransformAction.ActionType.DELETE_NODE, new Object[] {p[p.length - 3], p[p.length - 2]}));
-			actions.add(new TransformAction(TransformAction.ActionType.ADD_NODE, new Object[] {namePrefix + exCount, p[p.length - 2]}));
+			actions.add(new TransformAction(TransformAction.ActionType.MOVE_NODE, new Object[] {p[p.length - 3], namePrefix + exCount, p[p.length - 2]}));
 			doc.addElementTypeDefinition(p[p.length - 3], doc.getElementTypeDefinition(p[p.length - 3]).replaceAll(p[p.length - 2], "").replaceAll("[(][\\s]*[,|\\|]", "(").replaceAll("[,|\\|][\\s]*[)]", ")"));
 			doc.addElementTypeDefinition(namePrefix + exCount, "(" + docTypeDef.toString() + "," + p[p.length - 2] + ")");
 		} else {
