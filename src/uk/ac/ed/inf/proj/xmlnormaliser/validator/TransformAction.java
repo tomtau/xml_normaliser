@@ -23,13 +23,13 @@ public class TransformAction {
 	}
 	
 	private ActionType type;
-	private Object[] parameters;
+	private String[] parameters;
 	
 	/**
 	 * @param type
 	 * @param node
 	 */
-	public TransformAction(ActionType type, Object[] parameters) {
+	public TransformAction(ActionType type, String[] parameters) {
 		super();
 		this.type = type;
 		this.parameters = parameters;
@@ -45,7 +45,7 @@ public class TransformAction {
 	/**
 	 * @return the parameters
 	 */
-	public Object[] getParameters() {
+	public String[] getParameters() {
 		return parameters;
 	}
 	
@@ -61,32 +61,32 @@ public class TransformAction {
 		for (TransformAction action : actions) {
 			switch (action.type) {
 			case MOVE_ATTRIBUTE:
-				inputDTD = inputDTD.replaceFirst("<!ATTLIST[\\s]+" + (String) action.parameters[0] + "[\\s]+" + (String) action.parameters[2], 
-						"<!ATTLIST " + (String) action.parameters[1] + " " + (String) action.parameters[2]);
+				inputDTD = inputDTD.replaceFirst("<!ATTLIST[\\s]+" + action.parameters[0] + "[\\s]+" + action.parameters[2], 
+						"<!ATTLIST " + action.parameters[1] + " " + action.parameters[2]);
 				break;
 			case COPY_ATTRIBUTE:
-				inputDTD += "<!ATTLIST " +  (String) action.parameters[1] + " " + (String) action.parameters[2] + " CDATA #REQUIRED>\n";
+				inputDTD += "<!ATTLIST " +  action.parameters[1] + " " + action.parameters[2] + " CDATA #REQUIRED>\n";
 				break;
 			case ADD_NODE:
-				Matcher parent = Pattern.compile("<!ELEMENT\\s+" + (String) action.parameters[0] + "\\s+[^>]+").matcher(inputDTD);
+				Matcher parent = Pattern.compile("<!ELEMENT\\s+" + action.parameters[0] + "\\s+[^>]+").matcher(inputDTD);
 				if (parent.find()) {
-					inputDTD = parent.replaceFirst("<!ELEMENT " + (String) action.parameters[0] + " " + transformedDTD.getElementTypeDefinition((String) action.parameters[0]));
+					inputDTD = parent.replaceFirst("<!ELEMENT " + action.parameters[0] + " " + transformedDTD.getElementTypeDefinition(action.parameters[0]));
 				} else {
-					inputDTD += "<!ELEMENT " + (String) action.parameters[0] + " " + transformedDTD.getElementTypeDefinition((String) action.parameters[0]) + ">\n";
-					inputDTD += "<!ELEMENT " + (String) action.parameters[1] + " " + transformedDTD.getElementTypeDefinition((String) action.parameters[1]) + ">\n";
+					inputDTD += "<!ELEMENT " + action.parameters[0] + " " + transformedDTD.getElementTypeDefinition(action.parameters[0]) + ">\n";
+					inputDTD += "<!ELEMENT " + action.parameters[1] + " " + transformedDTD.getElementTypeDefinition(action.parameters[1]) + ">\n";
 				}
-				parent = Pattern.compile("<!ELEMENT\\s+" + (String) action.parameters[1] + "\\s+[^>]+").matcher(inputDTD);
+				parent = Pattern.compile("<!ELEMENT\\s+" + action.parameters[1] + "\\s+[^>]+").matcher(inputDTD);
 				if (!parent.find()) {
-					inputDTD += "<!ELEMENT " + (String) action.parameters[1] + " " + transformedDTD.getElementTypeDefinition((String) action.parameters[1]) + ">\n";
+					inputDTD += "<!ELEMENT " + action.parameters[1] + " " + transformedDTD.getElementTypeDefinition(action.parameters[1]) + ">\n";
 				}
 				break;
 			case MOVE_NODE:
-				parent = Pattern.compile("<!ELEMENT\\s+" + (String) action.parameters[0] + "\\s+[^>]+").matcher(inputDTD);
+				parent = Pattern.compile("<!ELEMENT\\s+" + action.parameters[0] + "\\s+[^>]+").matcher(inputDTD);
 				if (parent.find()) {
-					inputDTD =parent.replaceFirst("<!ELEMENT " + (String) action.parameters[0] + " " + transformedDTD.getElementTypeDefinition((String) action.parameters[0]));
+					inputDTD =parent.replaceFirst("<!ELEMENT " + action.parameters[0] + " " + transformedDTD.getElementTypeDefinition(action.parameters[0]));
 				} else {
-					inputDTD += "<!ELEMENT " + (String) action.parameters[0] + " " + transformedDTD.getElementTypeDefinition((String) action.parameters[0]) + ">\n";
-					inputDTD += "<!ELEMENT " + (String) action.parameters[1] + " " + transformedDTD.getElementTypeDefinition((String) action.parameters[1]) + ">\n";
+					inputDTD += "<!ELEMENT " + action.parameters[0] + " " + transformedDTD.getElementTypeDefinition(action.parameters[0]) + ">\n";
+					inputDTD += "<!ELEMENT " + action.parameters[1] + " " + transformedDTD.getElementTypeDefinition(action.parameters[1]) + ">\n";
 				}
 				break;				
 			default:

@@ -51,22 +51,22 @@ public class XNFTransformationTestCourses {
 		List<TransformAction> actions = XNFTransformation.createNewET(0, "newET", new FDPath("courses", "courses.course.taken_by.student.@sno"), "courses.course.taken_by.student.name.#PCDATA", originalFds, parsedDTD);
 		Assert.assertEquals(4, actions.size());
 		Assert.assertEquals(TransformAction.ActionType.ADD_NODE, actions.get(0).getType());
-		Assert.assertEquals("courses", (String) actions.get(0).getParameters()[0]);
-		Assert.assertEquals("newET0", (String) actions.get(0).getParameters()[1]);
+		Assert.assertEquals("courses", actions.get(0).getParameters()[0]);
+		Assert.assertEquals("newET0", actions.get(0).getParameters()[1]);
 
 		Assert.assertEquals(TransformAction.ActionType.ADD_NODE, actions.get(1).getType());
-		Assert.assertEquals("newET0", (String) actions.get(1).getParameters()[0]);
-		Assert.assertEquals("newET00", (String) actions.get(1).getParameters()[1]);		
+		Assert.assertEquals("newET0", actions.get(1).getParameters()[0]);
+		Assert.assertEquals("newET00", actions.get(1).getParameters()[1]);		
 
 		Assert.assertEquals(TransformAction.ActionType.MOVE_NODE, actions.get(2).getType());
-		Assert.assertEquals("student", (String) actions.get(2).getParameters()[0]);
-		Assert.assertEquals("newET0", (String) actions.get(2).getParameters()[1]);
-		Assert.assertEquals("name", (String) actions.get(2).getParameters()[2]);				
+		Assert.assertEquals("student", actions.get(2).getParameters()[0]);
+		Assert.assertEquals("newET0", actions.get(2).getParameters()[1]);
+		Assert.assertEquals("name", actions.get(2).getParameters()[2]);				
 		
 		Assert.assertEquals(TransformAction.ActionType.COPY_ATTRIBUTE, actions.get(3).getType());
-		Assert.assertEquals("student", (String) actions.get(3).getParameters()[0]);
-		Assert.assertEquals("newET00", (String) actions.get(3).getParameters()[1]);
-		Assert.assertEquals("sno", (String) actions.get(3).getParameters()[2]);
+		Assert.assertEquals("student", actions.get(3).getParameters()[0]);
+		Assert.assertEquals("newET00", actions.get(3).getParameters()[1]);
+		Assert.assertEquals("sno", actions.get(3).getParameters()[2]);
 		
 	}
 	
