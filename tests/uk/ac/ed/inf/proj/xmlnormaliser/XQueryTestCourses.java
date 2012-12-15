@@ -60,10 +60,10 @@ public class XQueryTestCourses {
 		Queue<String> attrA = new LinkedList<String>();
 		Queue<String> nodeF = new LinkedList<String>();
 		nodeF.add("name($node) != 'name'");
-		String output = XQueryGenerator.purge("doc(\"test.xml\")/courses", 0, result, attrF, attrA, nodeF, "na0");
+		String output = XQueryGenerator.purge("doc(\"test.xml\")/courses", 0, result, attrF, attrA, nodeF, "$na0");
 		Assert.assertEquals("local:transform($nf0, $na0, $afi, $aai, doc(\"test.xml\")/courses)", output);
 		Assert.assertTrue(nodeF.isEmpty());
-		Assert.assertEquals(",$nf1 := function($node as element()) as xs:boolean {name($node) != 'name'}\n", result.toString());
+		Assert.assertEquals(", $nf0 := function($node as element()) as xs:boolean {name($node) != 'name'}\n", result.toString());
 	}
 	
 	@Test

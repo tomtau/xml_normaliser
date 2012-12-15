@@ -64,7 +64,42 @@ public class XQueryGenerator {
 	static String purge(String source, int counter, StringBuilder output,
 			Queue<String> attrF, Queue<String> attrA, Queue<String> nodeF,
 			String nodeAFunId) {
-		return "";
+		String nodeFFunId, attrAFunId, attrFFunId;
+
+		if (attrF.isEmpty()) {
+			attrFFunId = AF_FUN_ID + "i";
+		} else {
+			attrFFunId = AF_FUN_ID + counter;
+			output.append(", ").append(attrFFunId).append(" := function($node as element(), $att as attribute()) as attribute()* {\nif (").append(attrF.poll());
+			while (!attrF.isEmpty()) {
+				output.append(" or ").append(attrF.poll());
+			}
+			output.append(") then attribute {name($att)} {$att}\n"
+            + "else ()}\n");
+		}		
+		
+		if (attrA.isEmpty()) {
+			attrAFunId = AA_FUN_ID + "i";
+		} else {
+			attrAFunId = AA_FUN_ID + counter;
+			output.append(", ").append(attrAFunId).append(" := function($node as element()) as attribute()* {\n").append(attrA.poll()).append("\nelse ");
+			while (!attrA.isEmpty()) {
+				output.append(attrA.poll()).append("\nelse ");
+			}
+			output.append("() }\n");
+		}		
+		
+		if (nodeF.isEmpty()) {
+			nodeFFunId = NF_FUN_ID + "i";
+		} else {
+			nodeFFunId = NF_FUN_ID + counter;
+			output.append(", ").append(nodeFFunId).append(" := function($node as element()) as xs:boolean {").append(nodeF.poll());
+			while (!nodeF.isEmpty()) {
+				output.append(" or ").append(nodeF.poll());
+			}
+			output.append("}\n");
+		}
+		return String.format("local:transform(%s, %s, %s, %s, %s)", nodeFFunId, nodeAFunId, attrFFunId, attrAFunId, source);
 	}
 
 	/**

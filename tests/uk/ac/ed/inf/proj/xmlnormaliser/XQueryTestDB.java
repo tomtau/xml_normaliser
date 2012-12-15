@@ -61,19 +61,17 @@ public class XQueryTestDB {
 		Queue<String> attrA = new LinkedList<String>();
 		attrA.add("if (name($node) = 'issue') then attribute {'year'} {$node/inproceedings[position() = 1]/@year}");
 		Queue<String> nodeF = new LinkedList<String>();
-		String output = XQueryGenerator.purge("local:transform($nf1, $na1, $af1, $aa1, doc(\"test.xml\")/db)/db", 0, result, attrF, attrA, nodeF, "na0");
+		String output = XQueryGenerator.purge("local:transform($nf1, $na1, $af1, $aa1, doc(\"test.xml\")/db)/db", 0, result, attrF, attrA, nodeF, "$nai");
 		Assert.assertEquals("local:transform($nfi, $nai, $af0, $aa0, local:transform($nf1, $na1, $af1, $aa1, doc(\"test.xml\")/db)/db)", output);
 		Assert.assertTrue(attrF.isEmpty());
 		Assert.assertTrue(attrA.isEmpty());
-		Assert.assertEquals(",$af0 := function($node as element(), $att as attribute()) as attribute()* {\n"
-            + "if (name($node) != 'inproceedings' and name($att) != 'year') then\n"
-            + "attribute {name($att)} {$att}\n"
-            + "else ()\n"
-            + "}\n"    
-            + ",$aa0 := function($node as element()) as attribute()* {\n"
-			+ "if (name($node) = 'issue') then attribute {'year'} {$node/inproceedings[position() = 1]/@year}\n"
-            + "else ()\n"
-            +"}\n", result.toString());
+		Assert.assertEquals(", $af0 := function($node as element(), $att as attribute()) as attribute()* {\n"
+							+ "if ((name($node) != 'inproceedings' and name($att) != 'year')) then attribute {name($att)} {$att}\n"
+							+ "else ()}\n"
+							+", $aa0 := function($node as element()) as attribute()* {\n"
+							+ "if (name($node) = 'issue') then attribute {'year'} {$node/inproceedings[position() = 1]/@year}\n"
+							+ "else () }\n"
+							, result.toString());
 	}
 	
 	@Test
