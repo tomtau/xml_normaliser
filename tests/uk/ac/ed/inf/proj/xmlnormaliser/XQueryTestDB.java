@@ -57,7 +57,7 @@ public class XQueryTestDB {
 	public void testPurgeDB() throws Exception {
 		StringBuilder result = new StringBuilder();
 		Queue<String> attrF = new LinkedList<String>();
-		attrF.add("(name($node) != 'inproceedings' and name($att) != 'year')");
+		attrF.add("(name($node) != 'inproceedings' or name($att) != 'year')");
 		Queue<String> attrA = new LinkedList<String>();
 		attrA.add("if (name($node) = 'issue') then attribute {'year'} {$node/inproceedings[position() = 1]/@year}");
 		Queue<String> nodeF = new LinkedList<String>();
@@ -66,7 +66,7 @@ public class XQueryTestDB {
 		Assert.assertTrue(attrF.isEmpty());
 		Assert.assertTrue(attrA.isEmpty());
 		Assert.assertEquals(", $af0 := function($node as element(), $att as attribute()) as attribute()* {\n"
-							+ "if ((name($node) != 'inproceedings' and name($att) != 'year')) then attribute {name($att)} {$att}\n"
+							+ "if ((name($node) != 'inproceedings' or name($att) != 'year')) then attribute {name($att)} {$att}\n"
 							+ "else ()}\n"
 							+", $aa0 := function($node as element()) as attribute()* {\n"
 							+ "if (name($node) = 'issue') then attribute {'year'} {$node/inproceedings[position() = 1]/@year}\n"
