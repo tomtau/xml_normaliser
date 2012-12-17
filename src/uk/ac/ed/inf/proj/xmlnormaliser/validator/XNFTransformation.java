@@ -49,7 +49,23 @@ public class XNFTransformation {
 	 * @return
 	 */
 	static String getRelativePath(String[] source, String[] target) {
-		return "";
+		int commonIndex = 0;
+		while (commonIndex < source.length && commonIndex < target.length
+				&& source[commonIndex].equalsIgnoreCase(target[commonIndex])) {
+			commonIndex++;
+		}
+		StringBuilder relative = new StringBuilder();
+		if (source.length != commonIndex) {
+			int dirsUp = source.length - commonIndex;
+			for (int i = 0; i < dirsUp; i++) {
+				relative.append("../");
+			}
+		}
+		for (int i = commonIndex; i < target.length; i++) {
+			relative.append(target[i]).append("/");
+		}
+		relative.deleteCharAt(relative.length() - 1);
+		return relative.toString();
 	}
 	
 	/**
