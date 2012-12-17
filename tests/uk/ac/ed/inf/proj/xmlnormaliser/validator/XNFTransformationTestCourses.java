@@ -45,6 +45,15 @@ public class XNFTransformationTestCourses {
 		originalFds = FDParser.parse(Utils.readFile(TEST_FILE_FD));
 		parsedDTD = DTDParser.parse(Utils.readFile(TEST_FILE_DTD));
 	}	
+
+	@Test
+	public void testGetRelativePath() {
+		String[] source = new String[] {"courses"};
+		String[] target = "courses.course.taken_by.student.name".split("\\.");
+		String expected = "course/taken_by/student/name";
+		String actual = XNFTransformation.getRelativePath(source, target);
+		Assert.assertEquals(expected, actual);
+	}	
 	
 	@Test
 	public void testCreateNewET() {

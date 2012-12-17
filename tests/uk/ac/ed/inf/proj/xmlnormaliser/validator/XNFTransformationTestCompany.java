@@ -47,6 +47,15 @@ public class XNFTransformationTestCompany {
 	}	
 	
 	@Test
+	public void testGetRelativePath() {
+		String[] source = "company.department.dep_name".split("\\.");
+		String[] target = "company.department.constitution.employee.@eno".split("\\.");
+		String expected = "../constitution/employee/@eno";
+		String actual = XNFTransformation.getRelativePath(source, target);
+		Assert.assertEquals(expected, actual);
+	}
+	
+	@Test
 	public void testMoveAttribute() {
 		List<TransformAction> actions = XNFTransformation.moveAttribute(new FDPath("company.department.dep_name"), "company.department.constitution.employee.@eno", originalFds, parsedDTD);
 		Assert.assertEquals(1, actions.size());

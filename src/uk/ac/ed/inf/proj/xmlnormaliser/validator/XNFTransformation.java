@@ -43,6 +43,16 @@ public class XNFTransformation {
 	}
 	
 	/**
+	 * Returns a relative path from one absolute tree path to another
+	 * @param source
+	 * @param target
+	 * @return
+	 */
+	static String getRelativePath(String[] source, String[] target) {
+		return "";
+	}
+	
+	/**
 	 * Given an anomalous XFD of the form q -> p.@l, the set of actions to transform DTD and XFDs is returned  
 	 * @param leftHandSide
 	 * @param rightHandSide
