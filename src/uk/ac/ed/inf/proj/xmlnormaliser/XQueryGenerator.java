@@ -149,7 +149,7 @@ public class XQueryGenerator {
 			case COPY_ATTRIBUTE:
 				attrA.add("if (name($node) = '" + action.getParameters()[1]
 						+ "') then attribute {'" + action.getParameters()[2]
-						+ "'} {$node/" + action.getParameters()[0]
+						+ "'} {$node/" + action.getParameters()[3]
 						+ "[position() = 1]/@" + action.getParameters()[2]
 						+ "}\n");
 				break;

@@ -62,7 +62,9 @@ public class XNFTransformation {
 			}
 		}
 		for (int i = commonIndex; i < target.length; i++) {
-			relative.append(target[i]).append("/");
+			if (target[i].charAt(0) != '@' && target[i].charAt(0) != '#') {
+				relative.append(target[i]).append("/");
+			}
 		}
 		relative.deleteCharAt(relative.length() - 1);
 		return relative.toString();
@@ -92,7 +94,8 @@ public class XNFTransformation {
 		String attr = p[p.length - 1];
 		qPath.append(attr);
 		String lastP = p[p.length - 2];
-		actions.add(new TransformAction(TransformAction.ActionType.MOVE_ATTRIBUTE, new String[] {lastP, lastQ, attr.substring(1)}));
+		actions.add(new TransformAction(TransformAction.ActionType.MOVE_ATTRIBUTE, new String[] {lastP, lastQ, attr.substring(1), 
+				getRelativePath(q, p)}));
 		doc.moveAttribute(attr, lastP, lastQ);
 		
 		for (Entry<FDPath, FDPath> xfd : originalXfds.entrySet()) {
@@ -186,16 +189,19 @@ public class XNFTransformation {
 		doc.addElementTypeDefinition(namePrefix + exCount, docTypeDef.toString());
 		String[] p = rightHandSide.split("\\.");
 		if (p[p.length - 1].charAt(0) != '@') {
-			actions.add(new TransformAction(TransformAction.ActionType.MOVE_NODE, new String[] {p[p.length - 3], namePrefix + exCount, p[p.length - 2]}));
+			actions.add(new TransformAction(TransformAction.ActionType.MOVE_NODE, new String[] {p[p.length - 3], namePrefix + exCount, p[p.length - 2], 
+					getRelativePath(q, p)}));
 			doc.addElementTypeDefinition(p[p.length - 3], doc.getElementTypeDefinition(p[p.length - 3]).replaceAll(p[p.length - 2], "").replaceAll("[(][\\s]*[,|\\|]", "(").replaceAll("[,|\\|][\\s]*[)]", ")"));
 			doc.addElementTypeDefinition(namePrefix + exCount, "(" + docTypeDef.toString() + "," + p[p.length - 2] + ")");
 		} else {
-			actions.add(new TransformAction(TransformAction.ActionType.MOVE_ATTRIBUTE, new String[] {p[p.length - 2], namePrefix + exCount, p[p.length - 1].substring(1)}));
+			actions.add(new TransformAction(TransformAction.ActionType.MOVE_ATTRIBUTE, new String[] {p[p.length - 2], namePrefix + exCount, p[p.length - 1].substring(1), 
+					getRelativePath(q, p)}));
 			doc.moveAttribute(p[p.length - 1], p[p.length - 2], namePrefix + exCount);
 		}
 		int innerCount = 0;
 		for (String[] pn : keys) {
-			actions.add(new TransformAction(TransformAction.ActionType.COPY_ATTRIBUTE, new String[] {pn[pn.length - 2], (namePrefix + exCount) + innerCount, pn[pn.length - 1].substring(1)}));
+			actions.add(new TransformAction(TransformAction.ActionType.COPY_ATTRIBUTE, new String[] {pn[pn.length - 2], (namePrefix + exCount) + innerCount, pn[pn.length - 1].substring(1), 
+					getRelativePath(q, pn)}));
 			doc.addElementAttribute((namePrefix + exCount) + innerCount, pn[pn.length - 1]);
 			innerCount++;
 		}

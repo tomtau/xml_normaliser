@@ -50,7 +50,7 @@ public class XNFTransformationTestCompany {
 	public void testGetRelativePath() {
 		String[] source = "company.department.dep_name".split("\\.");
 		String[] target = "company.department.constitution.employee.@eno".split("\\.");
-		String expected = "../constitution/employee/@eno";
+		String expected = "../constitution/employee";
 		String actual = XNFTransformation.getRelativePath(source, target);
 		Assert.assertEquals(expected, actual);
 	}
