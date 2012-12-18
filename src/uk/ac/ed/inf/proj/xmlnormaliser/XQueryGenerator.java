@@ -151,45 +151,56 @@ public class XQueryGenerator {
 						+ "'} {$node/" + action.getParameters()[3]
 						+ "[position() = 1]/@" + action.getParameters()[2]
 						+ "}\n");
-/*					break;
-			case ADD_NODE:
+				break;
+			case CREATE_KEY_NODE:
+				// parent, node name, moved generating node/attribute, path from parent, subnode1 name, copied/generating attribute, path from parent...
+				
 				String attrAFunId = AA_FUN_ID + count;
 				result.append(", ")
-						.append(attrAFunId)
-						.append("function($node as element()) as item()* {\n"
-								+ "if (name($node) = '")
-						.append(action.getParameters()[0])
-						.append("') then\n"
-								+ "for $na in distinct-values($node/")
-						.append(action.getParameters()[0]).append("/*")
-						.append("/text()) return element {'")
-						.append(action.getParameters()[1])
-						.append("'} {}}\nelse ()}");
+				.append(attrAFunId)
+				.append(" := function($node as element()) as item()* {\n"
+						+ "if (name($node) = '")
+				.append(action.getParameters()[0])
+				.append("') then\nfor $na in distinct-values($node/");
+				if (action.getParameters()[2].charAt(0) == '@') {
+					String origin = action.getParameters()[3]
+							.substring(action.getParameters()[3].lastIndexOf('/') + 1);
+					attrF.add("(name($node) != '" + origin
+							+ "' or name($att) != '" + action.getParameters()[2].substring(1)
+							+ "')");
+					result.append(action.getParameters()[3]).append("/").append(action.getParameters()[2])
+					.append(")");
+					result.append(" return\nelement {'").append(action.getParameters()[1])
+					.append("'} {");
+					result.append("attribute {'").append(action.getParameters()[2].substring(1)).append("'} {$na}");
+					
+				} else {
+					nodeF.add("name($node) != '" + action.getParameters()[2] + "'");
+					result.append(action.getParameters()[3]).append("/text())");
+					result.append(" return element {'").append(action.getParameters()[1])
+					.append("'} {");
+					result.append("element {'").append(action.getParameters()[2]).append("'} {$na}");
+				}
+				if (action.getParameters().length > 4) {
+					int i = 4;
+					while (i + 2 < action.getParameters().length) {
+						result.append(", for $nu in distinct-values($node/").append(action.getParameters()[i+2]).append("[");
+						if (action.getParameters()[2].charAt(0) == '@') {
+							result.append(action.getParameters()[2]).append(" = $na]/");
+						} else {
+							result.append(action.getParameters()[2]).append("/text() = $na]/");
+						}
+						result.append(action.getParameters()[i+1]).append(") return\n element {'")
+						.append(action.getParameters()[i]).append("'} {attribute {'").append(action.getParameters()[i+1].substring(1))
+						.append("'} {$nu}}");
+						i += 3;
+					}
+				}
+				result.append("\n}\nelse ()}");
 				source = purge(source, count, result, attrF, attrA, nodeF,
 						attrAFunId);
 				count++;
 				break;
-			case MOVE_NODE:
-				nodeF.add("name($node) != '" + action.getParameters()[2] + "'");
-				attrAFunId = AA_FUN_ID + count;
-				result.append(", ")
-						.append(attrAFunId)
-						.append("function($node as element()) as item()* {\n"
-								+ "if (name($node) = '")
-						.append(action.getParameters()[1])
-						.append("') then\n"
-								+ "for $na in distinct-values($node/")
-						.append(action.getParameters()[0]).append("/")
-						.append(action.getParameters()[2])
-						.append("/text()) return element {'")
-						.append(action.getParameters()[1]).append("'} {")
-						.append("element {'").append(action.getParameters()[2])
-						.append("'} {$na}}").append("\nelse ()}");
-				source = purge(source, count, result, attrF, attrA, nodeF,
-						attrAFunId);
-				count++;
-
-				break;*/
 			default:
 				break;
 			}
