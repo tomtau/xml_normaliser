@@ -58,24 +58,16 @@ public class XNFTransformationTestCourses {
 	@Test
 	public void testCreateNewET() {
 		List<TransformAction> actions = XNFTransformation.createNewET(0, "newET", new FDPath("courses", "courses.course.taken_by.student.@sno"), "courses.course.taken_by.student.name.#PCDATA", originalFds, parsedDTD);
-		Assert.assertEquals(4, actions.size());
-		Assert.assertEquals(TransformAction.ActionType.ADD_NODE, actions.get(0).getType());
+		Assert.assertEquals(1, actions.size());
+		Assert.assertEquals(7, actions.get(0).getParameters().length);
+		Assert.assertEquals(TransformAction.ActionType.CREATE_KEY_NODE, actions.get(0).getType());
 		Assert.assertEquals("courses", actions.get(0).getParameters()[0]);
 		Assert.assertEquals("newET0", actions.get(0).getParameters()[1]);
-
-		Assert.assertEquals(TransformAction.ActionType.ADD_NODE, actions.get(1).getType());
-		Assert.assertEquals("newET0", actions.get(1).getParameters()[0]);
-		Assert.assertEquals("newET00", actions.get(1).getParameters()[1]);		
-
-		Assert.assertEquals(TransformAction.ActionType.MOVE_NODE, actions.get(2).getType());
-		Assert.assertEquals("student", actions.get(2).getParameters()[0]);
-		Assert.assertEquals("newET0", actions.get(2).getParameters()[1]);
-		Assert.assertEquals("name", actions.get(2).getParameters()[2]);				
-		
-		Assert.assertEquals(TransformAction.ActionType.COPY_ATTRIBUTE, actions.get(3).getType());
-		Assert.assertEquals("student", actions.get(3).getParameters()[0]);
-		Assert.assertEquals("newET00", actions.get(3).getParameters()[1]);
-		Assert.assertEquals("sno", actions.get(3).getParameters()[2]);
+		Assert.assertEquals("name", actions.get(0).getParameters()[2]);
+		Assert.assertEquals("course/taken_by/student/name", actions.get(0).getParameters()[3]);
+		Assert.assertEquals("newET00", actions.get(0).getParameters()[4]);
+		Assert.assertEquals("@sno", actions.get(0).getParameters()[5]);
+		Assert.assertEquals("course/taken_by/student", actions.get(0).getParameters()[6]);
 		
 	}
 	

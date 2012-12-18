@@ -12,6 +12,8 @@ import uk.ac.ed.inf.proj.xmlnormaliser.parser.fd.FDPath;
 /**
  * Moving attributes and creating new element types
  * 
+ * TODO: change types from Lists to single actions
+ * 
  * @author Tomas Tauber
  * 
  */
@@ -174,37 +176,43 @@ public class XNFTransformation {
 		for (int i = 1; i < q.length; i++) {
 			qPath.append(".").append(q[i]);
 		}
-		
-		actions.add(new TransformAction(TransformAction.ActionType.ADD_NODE, new String[] {lastQ, namePrefix + exCount}));
+		ArrayList<String> keyNode = new ArrayList<String>();
+		keyNode.add(lastQ);
+		keyNode.add(namePrefix + exCount);
+		/* add the main node */
 		doc.addElement(namePrefix + exCount);
 		doc.addElementTypeDefinition(lastQ, "(" + doc.getElementTypeDefinition(lastQ) + ", " + namePrefix + exCount + "*)");
 		String[][] keys = getPElements(leftHandSide);
 		StringBuilder docTypeDef = new StringBuilder("(");
 		for (int innerCount = 0; innerCount < keys.length; innerCount++) {
-			actions.add(new TransformAction(TransformAction.ActionType.ADD_NODE, new String[] {namePrefix + exCount, (namePrefix + exCount) + innerCount}));
+			/* add its sub nodes */
 			doc.addElement((namePrefix + exCount) + innerCount);
 			docTypeDef.append(namePrefix).append(exCount).append(innerCount).append("*,");
 		}
 		docTypeDef.deleteCharAt(docTypeDef.length()-1).append(")");
 		doc.addElementTypeDefinition(namePrefix + exCount, docTypeDef.toString());
 		String[] p = rightHandSide.split("\\.");
+		
+		/* move attribute or node */
 		if (p[p.length - 1].charAt(0) != '@') {
-			actions.add(new TransformAction(TransformAction.ActionType.MOVE_NODE, new String[] {p[p.length - 3], namePrefix + exCount, p[p.length - 2], 
-					getRelativePath(q, p)}));
+			keyNode.add(p[p.length - 2]);
 			doc.addElementTypeDefinition(p[p.length - 3], doc.getElementTypeDefinition(p[p.length - 3]).replaceAll(p[p.length - 2], "").replaceAll("[(][\\s]*[,|\\|]", "(").replaceAll("[,|\\|][\\s]*[)]", ")"));
 			doc.addElementTypeDefinition(namePrefix + exCount, "(" + docTypeDef.toString() + "," + p[p.length - 2] + ")");
 		} else {
-			actions.add(new TransformAction(TransformAction.ActionType.MOVE_ATTRIBUTE, new String[] {p[p.length - 2], namePrefix + exCount, p[p.length - 1].substring(1), 
-					getRelativePath(q, p)}));
+			keyNode.add(p[p.length - 1]);
 			doc.moveAttribute(p[p.length - 1], p[p.length - 2], namePrefix + exCount);
 		}
+		keyNode.add(getRelativePath(q, p));
 		int innerCount = 0;
 		for (String[] pn : keys) {
-			actions.add(new TransformAction(TransformAction.ActionType.COPY_ATTRIBUTE, new String[] {pn[pn.length - 2], (namePrefix + exCount) + innerCount, pn[pn.length - 1].substring(1), 
-					getRelativePath(q, pn)}));
+			/* copy attributes to subnodes */
+			keyNode.add((namePrefix + exCount) + innerCount);
+			keyNode.add(pn[pn.length - 1]);
+			keyNode.add(getRelativePath(q, pn));
 			doc.addElementAttribute((namePrefix + exCount) + innerCount, pn[pn.length - 1]);
 			innerCount++;
 		}
+		actions.add(new TransformAction(TransformAction.ActionType.CREATE_KEY_NODE, keyNode.toArray(new String[keyNode.size()])));
 		/* delete anomalous xfd */
 		originalXfds.get(leftHandSide).remove(rightHandSide);
 		if (originalXfds.get(leftHandSide).isEmpty()) {

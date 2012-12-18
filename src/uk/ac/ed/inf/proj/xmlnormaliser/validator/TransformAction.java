@@ -16,10 +16,9 @@ import uk.ac.ed.inf.proj.xmlnormaliser.parser.dtd.DTD;
 public class TransformAction {
 
 	public enum ActionType {
-		MOVE_ATTRIBUTE,
-		COPY_ATTRIBUTE,
-		ADD_NODE,
-		MOVE_NODE
+		MOVE_ATTRIBUTE,	
+		// parent, node name, moved generating node/attribute, path from parent, subnode1 name, copied/generating attribute, path from parent...  
+		CREATE_KEY_NODE
 	}
 	
 	private ActionType type;
@@ -60,14 +59,7 @@ public class TransformAction {
 		inputDTD = inputDTD.replace("]>", "");
 		for (TransformAction action : actions) {
 			switch (action.type) {
-			case MOVE_ATTRIBUTE:
-				inputDTD = inputDTD.replaceFirst("<!ATTLIST[\\s]+" + action.parameters[0] + "[\\s]+" + action.parameters[2], 
-						"<!ATTLIST " + action.parameters[1] + " " + action.parameters[2]);
-				break;
-			case COPY_ATTRIBUTE:
-				inputDTD += "<!ATTLIST " +  action.parameters[1] + " " + action.parameters[2] + " CDATA #REQUIRED>\n";
-				break;
-			case ADD_NODE:
+			case CREATE_KEY_NODE:
 				Matcher parent = Pattern.compile("<!ELEMENT\\s+" + action.parameters[0] + "\\s+[^>]+").matcher(inputDTD);
 				if (parent.find()) {
 					inputDTD = parent.replaceFirst("<!ELEMENT " + action.parameters[0] + " " + transformedDTD.getElementTypeDefinition(action.parameters[0]));
@@ -79,16 +71,30 @@ public class TransformAction {
 				if (!parent.find()) {
 					inputDTD += "<!ELEMENT " + action.parameters[1] + " " + transformedDTD.getElementTypeDefinition(action.parameters[1]) + ">\n";
 				}
-				break;
-			case MOVE_NODE:
-				parent = Pattern.compile("<!ELEMENT\\s+" + action.parameters[0] + "\\s+[^>]+").matcher(inputDTD);
-				if (parent.find()) {
-					inputDTD =parent.replaceFirst("<!ELEMENT " + action.parameters[0] + " " + transformedDTD.getElementTypeDefinition(action.parameters[0]));
+				if (action.parameters[2].charAt(0) == '@') {
+					String origin = action.parameters[3].substring(action.parameters[3].lastIndexOf('/')+1);
+					String attr = action.parameters[2].substring(1); 
+					inputDTD = inputDTD.replaceFirst("<!ATTLIST[\\s]+" + origin + "[\\s]+" + attr, 
+							"<!ATTLIST " + action.parameters[1] + " " + attr);					
 				} else {
-					inputDTD += "<!ELEMENT " + action.parameters[0] + " " + transformedDTD.getElementTypeDefinition(action.parameters[0]) + ">\n";
-					inputDTD += "<!ELEMENT " + action.parameters[1] + " " + transformedDTD.getElementTypeDefinition(action.parameters[1]) + ">\n";
+					String origin = action.parameters[3].substring(0,action.parameters[3].lastIndexOf('/'));
+					origin = origin.substring(origin.lastIndexOf('/')+1);
+					parent = Pattern.compile("<!ELEMENT\\s+" + origin + "\\s+[^>]+").matcher(inputDTD);
+					if (parent.find()) {
+						inputDTD =parent.replaceFirst("<!ELEMENT " + origin + " " + transformedDTD.getElementTypeDefinition(origin));
+					}
 				}
-				break;				
+				int i = 4;
+				while (i + 2 < action.parameters.length) {
+					inputDTD += "<!ELEMENT " + action.parameters[i] + " " + transformedDTD.getElementTypeDefinition(action.parameters[i]) + ">\n";
+					inputDTD += "<!ATTLIST " +  action.parameters[i] + " " + action.parameters[i+1].substring(1) + " CDATA #REQUIRED>\n";
+					i += 3;
+				}
+				break;
+			case MOVE_ATTRIBUTE:
+				inputDTD = inputDTD.replaceFirst("<!ATTLIST[\\s]+" + action.parameters[0] + "[\\s]+" + action.parameters[2], 
+						"<!ATTLIST " + action.parameters[1] + " " + action.parameters[2]);
+				break;	
 			default:
 				break;
 			}
