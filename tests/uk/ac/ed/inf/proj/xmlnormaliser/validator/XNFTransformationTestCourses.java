@@ -1,7 +1,6 @@
 package uk.ac.ed.inf.proj.xmlnormaliser.validator;
 
 import java.io.File;
-import java.util.List;
 import java.util.Map;
 
 import junit.framework.Assert;
@@ -57,17 +56,16 @@ public class XNFTransformationTestCourses {
 	
 	@Test
 	public void testCreateNewET() {
-		List<TransformAction> actions = XNFTransformation.createNewET(0, "newET", new FDPath("courses", "courses.course.taken_by.student.@sno"), "courses.course.taken_by.student.name.#PCDATA", originalFds, parsedDTD);
-		Assert.assertEquals(1, actions.size());
-		Assert.assertEquals(7, actions.get(0).getParameters().length);
-		Assert.assertEquals(TransformAction.ActionType.CREATE_KEY_NODE, actions.get(0).getType());
-		Assert.assertEquals("courses", actions.get(0).getParameters()[0]);
-		Assert.assertEquals("newET0", actions.get(0).getParameters()[1]);
-		Assert.assertEquals("name", actions.get(0).getParameters()[2]);
-		Assert.assertEquals("course/taken_by/student/name", actions.get(0).getParameters()[3]);
-		Assert.assertEquals("newET00", actions.get(0).getParameters()[4]);
-		Assert.assertEquals("@sno", actions.get(0).getParameters()[5]);
-		Assert.assertEquals("course/taken_by/student", actions.get(0).getParameters()[6]);
+		TransformAction action = XNFTransformation.createNewET(0, "newET", new FDPath("courses", "courses.course.taken_by.student.@sno"), "courses.course.taken_by.student.name.#PCDATA", originalFds, parsedDTD);
+		Assert.assertEquals(7, action.getParameters().length);
+		Assert.assertEquals(TransformAction.ActionType.CREATE_KEY_NODE, action.getType());
+		Assert.assertEquals("courses", action.getParameters()[0]);
+		Assert.assertEquals("newET0", action.getParameters()[1]);
+		Assert.assertEquals("name", action.getParameters()[2]);
+		Assert.assertEquals("course/taken_by/student/name", action.getParameters()[3]);
+		Assert.assertEquals("newET00", action.getParameters()[4]);
+		Assert.assertEquals("@sno", action.getParameters()[5]);
+		Assert.assertEquals("course/taken_by/student", action.getParameters()[6]);
 		
 	}
 	

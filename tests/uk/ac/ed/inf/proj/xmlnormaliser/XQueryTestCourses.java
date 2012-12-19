@@ -12,8 +12,6 @@ import org.apache.log4j.BasicConfigurator;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import uk.ac.ed.inf.proj.xmlnormaliser.Utils;
-import uk.ac.ed.inf.proj.xmlnormaliser.XQueryGenerator;
 import uk.ac.ed.inf.proj.xmlnormaliser.parser.dtd.DTD;
 import uk.ac.ed.inf.proj.xmlnormaliser.parser.dtd.DTDParser;
 import uk.ac.ed.inf.proj.xmlnormaliser.parser.fd.FDParser;
@@ -69,7 +67,8 @@ public class XQueryTestCourses {
 	@Test
 	public void testXQueryCreateNewET() throws Exception {
 		String expected = Utils.readFile(TEST_FILE_XQ);
-		List<TransformAction> actions = XNFTransformation.createNewET(0, "newET", new FDPath("courses", "courses.course.taken_by.student.@sno"), "courses.course.taken_by.student.name.#PCDATA", originalFds, parsedDTD);
+		List<TransformAction> actions = new LinkedList<TransformAction>();
+		actions.add(XNFTransformation.createNewET(0, "newET", new FDPath("courses", "courses.course.taken_by.student.@sno"), "courses.course.taken_by.student.name.#PCDATA", originalFds, parsedDTD));
 		Assert.assertEquals(expected, XQueryGenerator.applyActions("test.xml", actions, parsedDTD));
 		
 	}

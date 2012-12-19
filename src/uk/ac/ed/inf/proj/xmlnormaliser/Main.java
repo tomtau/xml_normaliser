@@ -66,10 +66,10 @@ public class Main {
 										&& (lhs.indexOf('@') == -1);
 							}
 							if (moveAttribute) {
-								actions.addAll(XNFTransformation.moveAttribute(
+								actions.add(XNFTransformation.moveAttribute(
 										xfd.getKey(), rhs, xfds, originalDTD));
 							} else {
-								actions.addAll(XNFTransformation.createNewET(
+								actions.add(XNFTransformation.createNewET(
 										newETCount, "newET", xfd.getKey(), rhs,
 										xfds, originalDTD));
 								newETCount++;								

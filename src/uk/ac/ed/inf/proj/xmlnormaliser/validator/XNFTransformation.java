@@ -1,7 +1,6 @@
 package uk.ac.ed.inf.proj.xmlnormaliser.validator;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -12,7 +11,6 @@ import uk.ac.ed.inf.proj.xmlnormaliser.parser.fd.FDPath;
 /**
  * Moving attributes and creating new element types
  * 
- * TODO: change types from Lists to single actions
  * 
  * @author Tomas Tauber
  * 
@@ -73,15 +71,14 @@ public class XNFTransformation {
 	}
 	
 	/**
-	 * Given an anomalous XFD of the form q -> p.@l, the set of actions to transform DTD and XFDs is returned  
+	 * Given an anomalous XFD of the form q -> p.@l, an action to transform DTD and XFDs is returned  
 	 * @param leftHandSide
 	 * @param rightHandSide
 	 * @param originalXfds
 	 * @param doc
 	 * @return
 	 */
-	public static List<TransformAction> moveAttribute(FDPath leftHandSide, String rightHandSide, Map<FDPath, FDPath> originalXfds, DTD doc) {
-		List<TransformAction> actions = new ArrayList<TransformAction>();
+	public static TransformAction moveAttribute(FDPath leftHandSide, String rightHandSide, Map<FDPath, FDPath> originalXfds, DTD doc) {
 		String[] q = getLongestLastElements(leftHandSide);
 		int qIndex = q.length - 1;
 		if (q[qIndex].startsWith("@")) {
@@ -96,8 +93,6 @@ public class XNFTransformation {
 		String attr = p[p.length - 1];
 		qPath.append(attr);
 		String lastP = p[p.length - 2];
-		actions.add(new TransformAction(TransformAction.ActionType.MOVE_ATTRIBUTE, new String[] {lastP, lastQ, attr.substring(1), 
-				getRelativePath(q, p)}));
 		doc.moveAttribute(attr, lastP, lastQ);
 		
 		for (Entry<FDPath, FDPath> xfd : originalXfds.entrySet()) {
@@ -124,7 +119,8 @@ public class XNFTransformation {
 			}
 		}
 		
-		return actions;
+		return new TransformAction(TransformAction.ActionType.MOVE_ATTRIBUTE, new String[] {lastP, lastQ, attr.substring(1), 
+				getRelativePath(q, p)});
 	}
 
 	/**
@@ -160,15 +156,14 @@ public class XNFTransformation {
 	
 	
 	/**
-	 * Given an anomalous XFD of the form q, p1.@l1, p1.@l2, p1.@l3..., pn.@ln -> p.@l, the set of actions to transform DTD and XFDs is returned
+	 * Given an anomalous XFD of the form q, p1.@l1, p1.@l2, p1.@l3..., pn.@ln -> p.@l, an action to transform DTD and XFDs is returned
 	 * @param leftHandSide
 	 * @param rightHandSide
 	 * @param originalXfds
 	 * @param doc
 	 * @return
 	 */
-	public static List<TransformAction> createNewET(int exCount, String namePrefix, FDPath leftHandSide, String rightHandSide, Map<FDPath, FDPath> originalXfds, DTD doc) {
-		List<TransformAction> actions = new ArrayList<TransformAction>();
+	public static TransformAction createNewET(int exCount, String namePrefix, FDPath leftHandSide, String rightHandSide, Map<FDPath, FDPath> originalXfds, DTD doc) {
 		String[] q = getQElements(leftHandSide);
 		String lastQ = q[q.length - 1];
 		
@@ -212,7 +207,7 @@ public class XNFTransformation {
 			doc.addElementAttribute((namePrefix + exCount) + innerCount, pn[pn.length - 1]);
 			innerCount++;
 		}
-		actions.add(new TransformAction(TransformAction.ActionType.CREATE_KEY_NODE, keyNode.toArray(new String[keyNode.size()])));
+
 		/* delete anomalous xfd */
 		originalXfds.get(leftHandSide).remove(rightHandSide);
 		if (originalXfds.get(leftHandSide).isEmpty()) {
@@ -282,6 +277,6 @@ public class XNFTransformation {
 			
 		}
 		
-		return actions;
+		return new TransformAction(TransformAction.ActionType.CREATE_KEY_NODE, keyNode.toArray(new String[keyNode.size()]));
 	}	
 }

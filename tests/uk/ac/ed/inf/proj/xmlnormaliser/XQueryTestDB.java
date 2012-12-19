@@ -12,8 +12,6 @@ import org.apache.log4j.BasicConfigurator;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import uk.ac.ed.inf.proj.xmlnormaliser.Utils;
-import uk.ac.ed.inf.proj.xmlnormaliser.XQueryGenerator;
 import uk.ac.ed.inf.proj.xmlnormaliser.parser.dtd.DTD;
 import uk.ac.ed.inf.proj.xmlnormaliser.parser.dtd.DTDParser;
 import uk.ac.ed.inf.proj.xmlnormaliser.parser.fd.FDParser;
@@ -77,7 +75,8 @@ public class XQueryTestDB {
 	@Test
 	public void testXQueryMoveAttribute() throws Exception {
 		String expected = Utils.readFile(TEST_FILE_XQ);
-		List<TransformAction> actions = XNFTransformation.moveAttribute(new FDPath("db.conf.issue"), "db.conf.issue.inproceedings.@year", originalFds, parsedDTD);
+		List<TransformAction> actions = new LinkedList<TransformAction>();
+		actions.add(XNFTransformation.moveAttribute(new FDPath("db.conf.issue"), "db.conf.issue.inproceedings.@year", originalFds, parsedDTD));
 		Assert.assertEquals(expected, XQueryGenerator.applyActions("test.xml", actions, parsedDTD));
 		
 	}

@@ -1,7 +1,6 @@
 package uk.ac.ed.inf.proj.xmlnormaliser.validator;
 
 import java.io.File;
-import java.util.List;
 import java.util.Map;
 
 import junit.framework.Assert;
@@ -57,12 +56,12 @@ public class XNFTransformationTestCompany {
 	
 	@Test
 	public void testMoveAttribute() {
-		List<TransformAction> actions = XNFTransformation.moveAttribute(new FDPath("company.department.dep_name"), "company.department.constitution.employee.@eno", originalFds, parsedDTD);
-		Assert.assertEquals(1, actions.size());
-		Assert.assertEquals(TransformAction.ActionType.MOVE_ATTRIBUTE, actions.get(0).getType());
-		Assert.assertEquals("employee", actions.get(0).getParameters()[0]);
-		Assert.assertEquals("dep_name", actions.get(0).getParameters()[1]);
-		Assert.assertEquals("eno", actions.get(0).getParameters()[2]);	
+		TransformAction action = XNFTransformation.moveAttribute(new FDPath("company.department.dep_name"), "company.department.constitution.employee.@eno", originalFds, parsedDTD);
+
+		Assert.assertEquals(TransformAction.ActionType.MOVE_ATTRIBUTE, action.getType());
+		Assert.assertEquals("employee", action.getParameters()[0]);
+		Assert.assertEquals("dep_name", action.getParameters()[1]);
+		Assert.assertEquals("eno", action.getParameters()[2]);	
 		
 	}
 	
