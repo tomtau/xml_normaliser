@@ -184,13 +184,22 @@ public class XQueryGenerator {
 				if (action.getParameters().length > 4) {
 					int i = 4;
 					while (i + 2 < action.getParameters().length) {
-						result.append(", for $nu in distinct-values($node/").append(action.getParameters()[i+2]).append("[");
-						if (action.getParameters()[2].charAt(0) == '@') {
-							result.append(action.getParameters()[2]).append(" = $na]/");
+						String[] contSplit = action.getParameters()[i+2].split(action.getParameters()[3]);
+						result.append(", for $nu in distinct-values($node/");
+						if (contSplit.length > 1) {
+							result.append(action.getParameters()[3]).append("[");
 						} else {
-							result.append(action.getParameters()[2]).append("/text() = $na]/");
+							result.append(action.getParameters()[i+2]).append("[");
 						}
-						result.append(action.getParameters()[i+1]).append(") return\n element {'")
+						if (action.getParameters()[2].charAt(0) == '@') {
+							result.append(action.getParameters()[2]).append(" = $na]");
+						} else {
+							result.append(action.getParameters()[2]).append("/text() = $na]");
+						}
+						if (contSplit.length > 1) {
+							result.append(contSplit[1]);
+						}
+						result.append("/").append(action.getParameters()[i+1]).append(") return\n element {'")
 						.append(action.getParameters()[i]).append("'} {attribute {'").append(action.getParameters()[i+1].substring(1))
 						.append("'} {$nu}}");
 						i += 3;

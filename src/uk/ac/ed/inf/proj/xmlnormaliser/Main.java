@@ -35,17 +35,12 @@ public class Main {
 
 	/**
 	 * Checks if the parsed DTD is in XNF - if not, generates actions to transform it to XNF
-	 * and finally outputs the new DTD and a set of XFDs that satisfy XNF.
-	 * @param originalDoc - the original DTD String
-	 * @param originalDTD - the starting DTD object
-	 * @param xfds - a set of XFDs
-	 * @param newDTDPath - output of the new DTD
-	 * @param newXFDPath - output of the new XFD set
-	 * @throws FileNotFoundException
+	 * @param originalDTD
+	 * @param xfds
+	 * @return
 	 */
-	static void process(String originalDoc, DTD originalDTD,
-			Map<FDPath, FDPath> xfds, String newDTDPath, String newXFDPath)
-			throws FileNotFoundException {
+	static List<TransformAction> checkAndGenerateActions(DTD originalDTD,
+			Map<FDPath, FDPath> xfds) {
 		List<TransformAction> actions = new ArrayList<TransformAction>();
 		boolean invalid = true;
 		int newETCount = 0;
@@ -85,7 +80,24 @@ public class Main {
 				}
 
 			}
-		}
+		}		
+		return actions;
+	}
+	
+	/**
+	 * Checks if the parsed DTD is in XNF - if not, generates actions to transform it to XNF
+	 * and finally outputs the new DTD and a set of XFDs that satisfy XNF.
+	 * @param originalDoc - the original DTD String
+	 * @param originalDTD - the starting DTD object
+	 * @param xfds - a set of XFDs
+	 * @param newDTDPath - output of the new DTD
+	 * @param newXFDPath - output of the new XFD set
+	 * @throws FileNotFoundException
+	 */
+	static void process(String originalDoc, DTD originalDTD,
+			Map<FDPath, FDPath> xfds, String newDTDPath, String newXFDPath)
+			throws FileNotFoundException {
+		List<TransformAction> actions = checkAndGenerateActions(originalDTD, xfds);
 		PrintWriter out = new PrintWriter(newDTDPath);
 		out.println(TransformAction.applyActions(originalDoc, actions,
 				originalDTD));
