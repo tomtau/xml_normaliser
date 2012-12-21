@@ -19,7 +19,8 @@ import com.oy.shared.lm.out.GRAPHtoDOTtoGIF;
  */
 public class GraphDrawing {
 
-	private static final File TEMP_FOLDER = new File("_temp"); 
+	static final File TEMP_FOLDER = new File("_temp");
+	static final String SEPARATOR = System.getProperties().getProperty("file.separator");
 	
 	/**
 	 * Generates an image in the temp folder with the graph representing the input DTD
@@ -34,14 +35,13 @@ public class GraphDrawing {
 			TEMP_FOLDER.mkdirs();
 		}
 		
-		String separator = System.getProperties().getProperty("file.separator");
 		TaskOptions options = new TaskOptions();
-		options.inFile = TEMP_FOLDER + separator + filename + ".dtd";
+		options.inFile = TEMP_FOLDER + SEPARATOR + filename + ".dtd";
 		PrintWriter out = new PrintWriter(options.inFile);
 		out.println(inputDTD.replaceAll("<!DOCTYPE\\s+\\w+\\s*\\[", "").replaceAll("]>",""));
 		out.close();
-		options.dotFile = TEMP_FOLDER + separator + filename + ".dot";
-		options.outFile = TEMP_FOLDER + separator + filename + ".gif";
+		options.dotFile = TEMP_FOLDER + SEPARATOR + filename + ".dot";
+		options.outFile = TEMP_FOLDER + SEPARATOR + filename + ".gif";
 		if (System.getProperties().getProperty("os.name").toLowerCase().contains("win")) {
 			options.exeFile = "libs\\graphviz-2.4\\dot.exe";
 		} else {

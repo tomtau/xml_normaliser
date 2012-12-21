@@ -1,6 +1,23 @@
 package uk.ac.ed.inf.proj.xmlnormaliser.gui;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
+import javax.swing.JToolBar;
+import javax.swing.LayoutStyle;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.WindowConstants;
 
 /**
  * The Swing GUI for controlling the algorithm
@@ -15,6 +32,7 @@ public class MainFrame extends JFrame {
     public MainFrame() {
         initComponents();
         MainPanel.setEnabledAt(1, false);
+        addWindowListener(listener);
     }
 
     private void initComponents() {
