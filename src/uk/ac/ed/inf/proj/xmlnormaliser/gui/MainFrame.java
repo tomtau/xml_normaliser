@@ -19,6 +19,7 @@ public class MainFrame extends JFrame {
 
     private void initComponents() {
 
+    	listener = new ActionsHandler(this);
         FileDialog = new JFileChooser();
         XQueryDialog = new JDialog();
         XQueryPanel = new JPanel();
@@ -98,7 +99,7 @@ public class MainFrame extends JFrame {
         );
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setTitle("XML Normalisation Algorithm - s0943263");
+        setTitle("XML Normalisation Algorithm - Tomas Tauber");
 
         MainPanel.setTabPlacement(JTabbedPane.BOTTOM);
 
@@ -110,11 +111,7 @@ public class MainFrame extends JFrame {
         OpenDTD.setFocusable(false);
         OpenDTD.setHorizontalTextPosition(SwingConstants.CENTER);
         OpenDTD.setVerticalTextPosition(SwingConstants.BOTTOM);
-        OpenDTD.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                OpenDTDActionPerformed(evt);
-            }
-        });
+        OpenDTD.addActionListener(listener);
         InputButtons.add(OpenDTD);
 
         OpenXFD.setText("Load XFDs");
@@ -311,11 +308,7 @@ public class MainFrame extends JFrame {
 
     private void RunButtonActionPerformed(java.awt.event.ActionEvent evt) {                                          
         MainPanel.setEnabledAt(1, true);
-    }                                         
-
-    private void OpenDTDActionPerformed(java.awt.event.ActionEvent evt) {                                        
-        FileDialog.showOpenDialog(MainFrame.this);
-    }                                       
+    }                                     
 
     private void GenerateXQueryActionPerformed(java.awt.event.ActionEvent evt) {
         XQueryDialog.pack();
@@ -351,6 +344,7 @@ public class MainFrame extends JFrame {
         });
     }
     // Variables declaration - do not modify
+    ActionsHandler listener;
     JTextArea DTDText;
     JScrollPane DTDTextWrap;
     JFileChooser FileDialog;
