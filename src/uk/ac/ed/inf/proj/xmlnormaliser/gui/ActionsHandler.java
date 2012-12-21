@@ -42,6 +42,15 @@ public class ActionsHandler extends WindowAdapter implements ActionListener {
 					icon.getImage().flush();
 					relatedWindow.OriginalImageHolder.setIcon(icon);
 				}
+			} else if (e.getSource() == relatedWindow.RunButton) {
+				if (!relatedWindow.DTDText.getText().contains("<!DOCTYPE")) {
+					String root = (String) JOptionPane.showInputDialog(
+							relatedWindow,
+		                    "Input the root node:",
+		                    "Root node setup",
+		                    JOptionPane.PLAIN_MESSAGE);
+				}
+				relatedWindow.MainPanel.setEnabledAt(1, true);
 			}
 		} catch (Exception ex) {
 			JOptionPane.showMessageDialog(null, ex.getMessage());

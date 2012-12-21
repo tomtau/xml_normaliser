@@ -144,11 +144,7 @@ public class MainFrame extends JFrame {
         RunButton.setFocusable(false);
         RunButton.setHorizontalTextPosition(SwingConstants.CENTER);
         RunButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-        RunButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                RunButtonActionPerformed(evt);
-            }
-        });
+        RunButton.addActionListener(listener);
         InputButtons.add(RunButton);
 
         InputSplit.setDividerLocation(350);
@@ -323,11 +319,7 @@ public class MainFrame extends JFrame {
 
         pack();
     }
-
-    private void RunButtonActionPerformed(java.awt.event.ActionEvent evt) {                                          
-        MainPanel.setEnabledAt(1, true);
-    }                                     
-
+    
     private void GenerateXQueryActionPerformed(java.awt.event.ActionEvent evt) {
         XQueryDialog.pack();
         XQueryDialog.setVisible(true);
