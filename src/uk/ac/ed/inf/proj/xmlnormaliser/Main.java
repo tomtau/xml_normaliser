@@ -102,11 +102,9 @@ public class Main {
 			Map<FDPath, FDPath> xfds, String newDTDPath, String newXFDPath)
 			throws FileNotFoundException {
 		List<TransformAction> actions = checkAndGenerateActions(originalDTD, xfds);
-		PrintWriter out = new PrintWriter(newDTDPath);
-		out.println(TransformAction.applyActions(originalDoc, actions,
+		Utils.writeFile(newDTDPath, TransformAction.applyActions(originalDoc, actions,
 				originalDTD));
-		out.close();
-		out = new PrintWriter(newXFDPath);
+		PrintWriter out = new PrintWriter(newXFDPath);
 		for (Entry<FDPath, FDPath> xfd : xfds.entrySet()) {
 			out.println(xfd.getKey() + " -> " + xfd.getValue());
 		}

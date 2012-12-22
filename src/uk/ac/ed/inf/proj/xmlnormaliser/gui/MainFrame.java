@@ -219,6 +219,7 @@ public class MainFrame extends JFrame {
         SaveDTD.setFocusable(false);
         SaveDTD.setHorizontalTextPosition(SwingConstants.CENTER);
         SaveDTD.setVerticalTextPosition(SwingConstants.BOTTOM);
+        SaveDTD.addActionListener(listener);
         OutputButtons.add(SaveDTD);
 
         SaveXFD.setText("Save new XFDs");
@@ -226,6 +227,7 @@ public class MainFrame extends JFrame {
         SaveXFD.setFocusable(false);
         SaveXFD.setHorizontalTextPosition(SwingConstants.CENTER);
         SaveXFD.setVerticalTextPosition(SwingConstants.BOTTOM);
+        SaveXFD.addActionListener(listener);
         OutputButtons.add(SaveXFD);
 
         GenerateXQuery.setText("Generate XQuery to transform data");
