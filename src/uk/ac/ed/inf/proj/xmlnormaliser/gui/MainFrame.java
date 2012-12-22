@@ -82,6 +82,7 @@ public class MainFrame extends JFrame {
         SaveXQuery.setFocusable(false);
         SaveXQuery.setHorizontalTextPosition(SwingConstants.CENTER);
         SaveXQuery.setVerticalTextPosition(SwingConstants.BOTTOM);
+        SaveXQuery.addActionListener(listener);
         XQueryButtons.add(SaveXQuery);
 
         XQueryText.setColumns(20);

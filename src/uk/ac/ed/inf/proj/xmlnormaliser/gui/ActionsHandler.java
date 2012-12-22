@@ -91,14 +91,16 @@ public class ActionsHandler extends WindowAdapter implements ActionListener {
 				icon.getImage().flush();
 				relatedWindow.NewImageHolder.setIcon(icon);				
 				relatedWindow.MainPanel.setEnabledAt(1, true);
-			} else if (e.getSource() == relatedWindow.SaveDTD || e.getSource() == relatedWindow.SaveXFD) {
+			} else if (e.getSource() == relatedWindow.SaveDTD || e.getSource() == relatedWindow.SaveXFD || e.getSource() == relatedWindow.SaveXQuery) {
 				int returnVal = relatedWindow.FileDialog.showSaveDialog(relatedWindow);
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					File output = relatedWindow.FileDialog.getSelectedFile();
 					if (e.getSource() == relatedWindow.SaveDTD) {
 						Utils.writeFile(output.toString(), relatedWindow.NewDTDText.getText());
-					} else {
+					} else if (e.getSource() == relatedWindow.SaveXFD) {
 						Utils.writeFile(output.toString(), relatedWindow.NewXFDText.getText());
+					} else {
+						Utils.writeFile(output.toString(), relatedWindow.XQueryText.getText());
 					}
 				}
 			} else if (e.getSource() == relatedWindow.GenerateXQuery) {
