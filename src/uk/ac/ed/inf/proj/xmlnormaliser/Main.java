@@ -43,7 +43,7 @@ public class Main {
 	 * @param xfds
 	 * @return
 	 */
-	static List<TransformAction> checkAndGenerateActions(DTD originalDTD,
+	public static List<TransformAction> checkAndGenerateActions(DTD originalDTD,
 			Map<FDPath, FDPath> xfds) {
 		List<TransformAction> actions = new ArrayList<TransformAction>();
 		boolean invalid = true;
@@ -119,7 +119,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		BasicConfigurator.configure();
-		
+		boolean error = false;
 		if (args.length <= 1) {
 	        try {
 	            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
@@ -144,10 +144,7 @@ public class Main {
 	                new MainFrame().setVisible(true);
 	            }
 	        });
-		}
-		
-		boolean error = false;
-		if (args.length > 1) {
+		} else {
 			byte offset = 0;
 			File dtdFile = new File(args[0]);
 
