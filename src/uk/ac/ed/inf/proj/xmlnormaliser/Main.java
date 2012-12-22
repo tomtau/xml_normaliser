@@ -8,9 +8,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
+import uk.ac.ed.inf.proj.xmlnormaliser.gui.MainFrame;
 import uk.ac.ed.inf.proj.xmlnormaliser.parser.dtd.DTD;
 import uk.ac.ed.inf.proj.xmlnormaliser.parser.dtd.DTDParser;
 import uk.ac.ed.inf.proj.xmlnormaliser.parser.fd.FDParser;
@@ -115,6 +119,33 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		BasicConfigurator.configure();
+		
+		if (args.length <= 1) {
+	        try {
+	            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+	                if ("Nimbus".equals(info.getName())) {
+	                    UIManager.setLookAndFeel(info.getClassName());
+	                    break;
+	                }
+	            }
+	        } catch (ClassNotFoundException ex) {
+	        	LOGGER.warn(ex.getMessage(), ex);
+	        } catch (InstantiationException ex) {
+	        	LOGGER.warn(ex.getMessage(), ex);
+	        } catch (IllegalAccessException ex) {
+	        	LOGGER.warn(ex.getMessage(), ex);
+	        } catch (UnsupportedLookAndFeelException ex) {
+	        	LOGGER.warn(ex.getMessage(), ex);
+	        }
+
+	        /* Create and display the form */
+	        java.awt.EventQueue.invokeLater(new Runnable() {
+	            public void run() {
+	                new MainFrame().setVisible(true);
+	            }
+	        });
+		}
+		
 		boolean error = false;
 		if (args.length > 1) {
 			byte offset = 0;
@@ -159,8 +190,6 @@ public class Main {
 					System.exit(1);
 				}
 			}
-		} else {
-			error = true;
 		}
 
 		if (error) {
