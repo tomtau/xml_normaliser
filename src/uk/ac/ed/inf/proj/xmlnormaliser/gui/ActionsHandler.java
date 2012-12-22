@@ -17,6 +17,7 @@ import org.apache.log4j.Logger;
 
 import uk.ac.ed.inf.proj.xmlnormaliser.Main;
 import uk.ac.ed.inf.proj.xmlnormaliser.Utils;
+import uk.ac.ed.inf.proj.xmlnormaliser.XQueryGenerator;
 import uk.ac.ed.inf.proj.xmlnormaliser.parser.dtd.DTD;
 import uk.ac.ed.inf.proj.xmlnormaliser.parser.dtd.DTDParser;
 import uk.ac.ed.inf.proj.xmlnormaliser.parser.fd.FDParser;
@@ -100,6 +101,10 @@ public class ActionsHandler extends WindowAdapter implements ActionListener {
 						Utils.writeFile(output.toString(), relatedWindow.NewXFDText.getText());
 					}
 				}
+			} else if (e.getSource() == relatedWindow.GenerateXQuery) {
+				relatedWindow.XQueryText.setText(XQueryGenerator.applyActions("data.xml", actions, parsedDTD));
+				relatedWindow.XQueryDialog.pack();
+				relatedWindow.XQueryDialog.setVisible(true);
 			}
 		} catch (Exception ex) {
 			JOptionPane.showMessageDialog(null, ex.getMessage());

@@ -86,6 +86,8 @@ public class MainFrame extends JFrame {
 
         XQueryText.setColumns(20);
         XQueryText.setRows(5);
+        XQueryText.setLineWrap(true);
+        XQueryText.setTabSize(2);
         XQueryTextWrap.setViewportView(XQueryText);
 
         GroupLayout XQueryPanelLayout = new GroupLayout(XQueryPanel);
@@ -151,11 +153,13 @@ public class MainFrame extends JFrame {
         DTDText.setColumns(20);
         DTDText.setRows(5);
         DTDText.setText("DTD Input");
+        DTDText.setLineWrap(true);
         DTDTextWrap.setViewportView(DTDText);
 
         XFDText.setColumns(20);
         XFDText.setRows(5);
         XFDText.setText("XFD Input");
+        XFDText.setLineWrap(true);
         XFDTextWrap.setViewportView(XFDText);
 
         GroupLayout InputTextsLayout = new GroupLayout(InputTexts);
@@ -235,21 +239,19 @@ public class MainFrame extends JFrame {
         GenerateXQuery.setFocusable(false);
         GenerateXQuery.setHorizontalTextPosition(SwingConstants.CENTER);
         GenerateXQuery.setVerticalTextPosition(SwingConstants.BOTTOM);
-        GenerateXQuery.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                GenerateXQueryActionPerformed(evt);
-            }
-        });
+        GenerateXQuery.addActionListener(listener);
         OutputButtons.add(GenerateXQuery);
 
         OutputSplit.setDividerLocation(350);
 
         NewDTDText.setColumns(20);
         NewDTDText.setRows(5);
+        NewDTDText.setLineWrap(true);
         NewDTDTextWrap.setViewportView(NewDTDText);
 
         NewXFDText.setColumns(20);
         NewXFDText.setRows(5);
+        NewXFDText.setLineWrap(true);
         NewXFDTextWrap.setViewportView(NewXFDText);
 
         GroupLayout OutputTextsLayout = new GroupLayout(OutputTexts);
@@ -319,11 +321,6 @@ public class MainFrame extends JFrame {
         MainPanel.getAccessibleContext().setAccessibleName("MainPanel");
 
         pack();
-    }
-    
-    private void GenerateXQueryActionPerformed(java.awt.event.ActionEvent evt) {
-        XQueryDialog.pack();
-        XQueryDialog.setVisible(true);
     }
     
     // Variables declaration - do not modify
