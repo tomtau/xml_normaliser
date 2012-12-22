@@ -38,7 +38,7 @@ public class MainFrame extends JFrame {
     private void initComponents() {
 
     	listener = new ActionsHandler(this);
-        FileDialog = new JFileChooser();
+        FileDialog = new JFileChooser(System.getProperties().getProperty("user.dir"));
         XQueryDialog = new JDialog();
         XQueryPanel = new JPanel();
         XQueryButtons = new JToolBar();
@@ -137,6 +137,7 @@ public class MainFrame extends JFrame {
         OpenXFD.setFocusable(false);
         OpenXFD.setHorizontalTextPosition(SwingConstants.CENTER);
         OpenXFD.setVerticalTextPosition(SwingConstants.BOTTOM);
+        OpenXFD.addActionListener(listener);
         InputButtons.add(OpenXFD);
 
         RunButton.setText("Verify XNF and Transform");

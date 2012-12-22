@@ -42,6 +42,12 @@ public class ActionsHandler extends WindowAdapter implements ActionListener {
 					icon.getImage().flush();
 					relatedWindow.OriginalImageHolder.setIcon(icon);
 				}
+			} else if (e.getSource() == relatedWindow.OpenXFD) {
+				int returnVal = relatedWindow.FileDialog.showOpenDialog(relatedWindow);
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					File xfds = relatedWindow.FileDialog.getSelectedFile();
+					relatedWindow.XFDText.setText(Utils.readFile(xfds));
+				}
 			} else if (e.getSource() == relatedWindow.RunButton) {
 				if (!relatedWindow.DTDText.getText().contains("<!DOCTYPE")) {
 					String root = (String) JOptionPane.showInputDialog(
