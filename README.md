@@ -32,3 +32,8 @@ Testing
 There are a few unit tests. In order to run them, you can use the ant 'test' target:
 
     ant test
+
+Documentation
+-------
+It can be found in the doc folder and can be generated using the ant 'javadoc' target:
+    ant javadoc
