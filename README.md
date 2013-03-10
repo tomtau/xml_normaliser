@@ -25,8 +25,11 @@ Running
 
 After building in the project directory, run:
 For GUI:
+
     java -jar build.jar
-For CLI:    
+
+For CLI:
+
     java -jar build.jar <input DTD file> [root node] <input XFD file> [output DTD file] [output XFD file]
 
 Testing
@@ -38,4 +41,5 @@ There are a few unit tests. In order to run them, you can use the ant 'test' tar
 Documentation
 -------
 It can be found in the doc folder and can be generated using the ant 'javadoc' target:
+    
     ant javadoc
