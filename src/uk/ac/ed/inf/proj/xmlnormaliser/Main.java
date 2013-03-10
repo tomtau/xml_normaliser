@@ -24,8 +24,8 @@ import uk.ac.ed.inf.proj.xmlnormaliser.validator.XNFTransformation;
 import uk.ac.ed.inf.proj.xmlnormaliser.validator.XNFValidator;
 
 /**
- * The main method that reads from the command line
- * and the main processing loop of the normalisation algorithm
+ * The main method that reads from the command line and the main processing loop
+ * of the normalisation algorithm
  * 
  * @author Tomas Tauber
  * 
@@ -38,13 +38,15 @@ public class Main {
 	}
 
 	/**
-	 * Checks if the parsed DTD is in XNF - if not, generates actions to transform it to XNF
+	 * Checks if the parsed DTD is in XNF - if not, generates actions to
+	 * transform it to XNF
+	 * 
 	 * @param originalDTD
 	 * @param xfds
 	 * @return
 	 */
-	public static List<TransformAction> checkAndGenerateActions(DTD originalDTD,
-			Map<FDPath, FDPath> xfds) {
+	public static List<TransformAction> checkAndGenerateActions(
+			DTD originalDTD, Map<FDPath, FDPath> xfds) {
 		List<TransformAction> actions = new ArrayList<TransformAction>();
 		boolean invalid = true;
 		int newETCount = 0;
@@ -53,11 +55,12 @@ public class Main {
 			for (Entry<FDPath, FDPath> xfd : xfds.entrySet()) {
 				for (String rhs : xfd.getValue()) {
 					if (!XNFValidator.isTrivial(xfd.getKey(), rhs)) {
-						LOGGER.info("Non-trivial XFD: " + xfd.getKey() + " -> "
-								+ rhs);
+						LOGGER.info("Non-trivial XFD found: " + xfd.getKey()
+								+ " -> " + rhs);
 						if (!XNFValidator.isXNF(xfd.getKey(), rhs, xfds,
 								originalDTD)) {
-							LOGGER.info("XFD does not satisfy XNF");
+							LOGGER.info("XFD does not satisfy XNF: "
+									+ xfd.getKey() + " -> " + rhs);
 							invalid = true;
 							boolean moveAttribute = true;
 							for (String lhs : xfd.getKey()) {
@@ -65,17 +68,20 @@ public class Main {
 										&& (lhs.indexOf('@') == -1);
 							}
 							if (moveAttribute) {
+								LOGGER.info("Moving attributes...");
 								actions.add(XNFTransformation.moveAttribute(
 										xfd.getKey(), rhs, xfds, originalDTD));
 							} else {
+								LOGGER.info("Creating new element types...");
 								actions.add(XNFTransformation.createNewET(
 										newETCount, "newET", xfd.getKey(), rhs,
 										xfds, originalDTD));
-								newETCount++;								
+								newETCount++;
 							}
 							break;
 						} else {
-							LOGGER.info("XFD satisfies XNF");
+							LOGGER.info("XFD satisfies XNF: " + xfd.getKey()
+									+ " -> " + rhs);
 						}
 					} else {
 						LOGGER.info("Trivial XFD: " + xfd.getKey() + " -> "
@@ -84,26 +90,34 @@ public class Main {
 				}
 
 			}
-		}		
+		}
 		return actions;
 	}
-	
+
 	/**
-	 * Checks if the parsed DTD is in XNF - if not, generates actions to transform it to XNF
-	 * and finally outputs the new DTD and a set of XFDs that satisfy XNF.
-	 * @param originalDoc - the original DTD String
-	 * @param originalDTD - the starting DTD object
-	 * @param xfds - a set of XFDs
-	 * @param newDTDPath - output of the new DTD
-	 * @param newXFDPath - output of the new XFD set
+	 * Checks if the parsed DTD is in XNF - if not, generates actions to
+	 * transform it to XNF and finally outputs the new DTD and a set of XFDs
+	 * that satisfy XNF.
+	 * 
+	 * @param originalDoc
+	 *            - the original DTD String
+	 * @param originalDTD
+	 *            - the starting DTD object
+	 * @param xfds
+	 *            - a set of XFDs
+	 * @param newDTDPath
+	 *            - output of the new DTD
+	 * @param newXFDPath
+	 *            - output of the new XFD set
 	 * @throws FileNotFoundException
 	 */
 	static void process(String originalDoc, DTD originalDTD,
 			Map<FDPath, FDPath> xfds, String newDTDPath, String newXFDPath)
 			throws FileNotFoundException {
-		List<TransformAction> actions = checkAndGenerateActions(originalDTD, xfds);
-		Utils.writeFile(newDTDPath, TransformAction.applyActions(originalDoc, actions,
-				originalDTD));
+		List<TransformAction> actions = checkAndGenerateActions(originalDTD,
+				xfds);
+		Utils.writeFile(newDTDPath,
+				TransformAction.applyActions(originalDoc, actions, originalDTD));
 		PrintWriter out = new PrintWriter(newXFDPath);
 		for (Entry<FDPath, FDPath> xfd : xfds.entrySet()) {
 			out.println(xfd.getKey() + " -> " + xfd.getValue());
@@ -112,36 +126,39 @@ public class Main {
 	}
 
 	/**
-	 * Main - parses the arguments, parses the provided files and passes everything to the processing method.
+	 * Main - parses the arguments, parses the provided files and passes
+	 * everything to the processing method.
+	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		BasicConfigurator.configure();
 		boolean error = false;
 		if (args.length <= 1) {
-	        try {
-	            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-	                if ("Nimbus".equals(info.getName())) {
-	                    UIManager.setLookAndFeel(info.getClassName());
-	                    break;
-	                }
-	            }
-	        } catch (ClassNotFoundException ex) {
-	        	LOGGER.warn(ex.getMessage(), ex);
-	        } catch (InstantiationException ex) {
-	        	LOGGER.warn(ex.getMessage(), ex);
-	        } catch (IllegalAccessException ex) {
-	        	LOGGER.warn(ex.getMessage(), ex);
-	        } catch (UnsupportedLookAndFeelException ex) {
-	        	LOGGER.warn(ex.getMessage(), ex);
-	        }
+			try {
+				for (UIManager.LookAndFeelInfo info : UIManager
+						.getInstalledLookAndFeels()) {
+					if ("Nimbus".equals(info.getName())) {
+						UIManager.setLookAndFeel(info.getClassName());
+						break;
+					}
+				}
+			} catch (ClassNotFoundException ex) {
+				LOGGER.warn(ex.getMessage(), ex);
+			} catch (InstantiationException ex) {
+				LOGGER.warn(ex.getMessage(), ex);
+			} catch (IllegalAccessException ex) {
+				LOGGER.warn(ex.getMessage(), ex);
+			} catch (UnsupportedLookAndFeelException ex) {
+				LOGGER.warn(ex.getMessage(), ex);
+			}
 
-	        /* Create and display the form */
-	        java.awt.EventQueue.invokeLater(new Runnable() {
-	            public void run() {
-	                new MainFrame().setVisible(true);
-	            }
-	        });
+			/* Create and display the form */
+			java.awt.EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					new MainFrame().setVisible(true);
+				}
+			});
 		} else {
 			byte offset = 0;
 			File dtdFile = new File(args[0]);

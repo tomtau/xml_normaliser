@@ -118,7 +118,7 @@ public class MainFrame extends JFrame {
         );
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setTitle("XML Normalisation Algorithm - Tomas Tauber");
+        setTitle("XML Normalisation Algorithm by Tomas Tauber (s0943263)");
 
         MainPanel.setTabPlacement(JTabbedPane.BOTTOM);
 

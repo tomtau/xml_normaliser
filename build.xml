@@ -40,6 +40,16 @@
             <src path="tests"/>
             <classpath refid="xml_normaliser.classpath"/>
         </javac>
+        <jar destfile="build.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="uk.ac.ed.inf.proj.xmlnormaliser.Main"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="bin"/>
+            <zipfileset excludes="META-INF/*.SF" src="libs/junit.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="libs/log4j.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="libs/oy-lm-1.4.jar"/>
+        </jar>    	
     </target>
     <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
     <target name="test">
@@ -47,13 +57,20 @@
         <junit fork="yes" printsummary="withOutAndErr">
             <formatter type="xml"/>
             <test name="uk.ac.ed.inf.proj.xmlnormaliser.parser.dtd.DTDParserTestCourses" todir="${junit.output.dir}"/>
+        	<test name="uk.ac.ed.inf.proj.xmlnormaliser.parser.dtd.DTDParserTestCoursesExternal" todir="${junit.output.dir}"/>
             <test name="uk.ac.ed.inf.proj.xmlnormaliser.parser.dtd.DTDParserTestUniversity" todir="${junit.output.dir}"/>
         	<test name="uk.ac.ed.inf.proj.xmlnormaliser.parser.dtd.DTDParserTestCompany" todir="${junit.output.dir}"/>
         	<test name="uk.ac.ed.inf.proj.xmlnormaliser.parser.fd.FDParserTestCompany" todir="${junit.output.dir}"/>
+        	<test name="uk.ac.ed.inf.proj.xmlnormaliser.parser.fd.FDParserTestDB" todir="${junit.output.dir}"/>
         	<test name="uk.ac.ed.inf.proj.xmlnormaliser.validator.XNFValidatorTestCompany" todir="${junit.output.dir}"/>
         	<test name="uk.ac.ed.inf.proj.xmlnormaliser.validator.XNFValidatorTestCourses" todir="${junit.output.dir}"/>
+        	<test name="uk.ac.ed.inf.proj.xmlnormaliser.validator.XNFValidatorTestDB" todir="${junit.output.dir}"/>
         	<test name="uk.ac.ed.inf.proj.xmlnormaliser.validator.XNFTransformationTestCompany" todir="${junit.output.dir}"/>
-        	<test name="uk.ac.ed.inf.proj.xmlnormaliser.validator.XNFTransformationTestCourses" todir="${junit.output.dir}"/>        	
+        	<test name="uk.ac.ed.inf.proj.xmlnormaliser.validator.XNFTransformationTestCourses" todir="${junit.output.dir}"/>
+        	<test name="uk.ac.ed.inf.proj.xmlnormaliser.OverallTest" todir="${junit.output.dir}"/>
+        	<test name="uk.ac.ed.inf.proj.xmlnormaliser.XQueryTestCompany2" todir="${junit.output.dir}"/>
+        	<test name="uk.ac.ed.inf.proj.xmlnormaliser.XQueryTestCourses" todir="${junit.output.dir}"/>
+        	<test name="uk.ac.ed.inf.proj.xmlnormaliser.XQueryTestDB" todir="${junit.output.dir}"/>
             <classpath refid="xml_normaliser.classpath"/>
         </junit>
     </target>

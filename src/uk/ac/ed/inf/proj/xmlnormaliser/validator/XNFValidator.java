@@ -116,7 +116,8 @@ public class XNFValidator {
 		for (String element : elements) {
 			String[] children = DTDParser.getTokens(documentStructure.getElementTypeDefinition(element));
 			for (String child : children) {
-				if (child.charAt(child.length() - 1) != '*') {
+				if (child.charAt(child.length() - 1) != '*'
+						&& child.charAt(child.length() - 1) != '?') {
 					if (!child.equalsIgnoreCase("#PCDATA")) {
 						String path = getPath("", documentStructure.getRoot(), child, documentStructure);
 						FDPath prefix = new FDPath(path.substring(0, path.lastIndexOf('.')));
