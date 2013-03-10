@@ -22,10 +22,12 @@ In the project directory, run:
 Running
 -------
 * Make sure you have graphviz-2.4 installed
-After building in the project directory, run:
 
-    GUI: java -jar build.jar
-    CLI: java -jar build.jar <input DTD file> [root node] <input XFD file> [output DTD file] [output XFD file]
+After building in the project directory, run:
+For GUI:
+    java -jar build.jar
+For CLI:    
+    java -jar build.jar <input DTD file> [root node] <input XFD file> [output DTD file] [output XFD file]
 
 Testing
 -------
