@@ -3,9 +3,8 @@
  * 
  */
 /**
- * XML FD Parsing
- * Functional Dependency format: path1; path2 -> path3
- * Path format: parent.children.@attribute * 
+ * XNF Validation (detecting trivial XFDs + computing the closure)
+ * and Transformation (moving attributes and creating new element types)
  * @author Tomas Tauber
  *
  */
