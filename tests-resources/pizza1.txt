@@ -1,0 +1,3 @@
+pizzeria.pizza.@pid -> pizzeria.pizza
+pizzeria.pizza.liked_by.customer.@cid -> pizzeria.pizza.liked_by.customer
+pizzeria; pizzeria.pizza.liked_by.customer.@cid -> pizzeria.pizza.liked_by.customer.cname.#PCDATA

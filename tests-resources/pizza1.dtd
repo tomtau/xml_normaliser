@@ -1,0 +1,9 @@
+<!ELEMENT pizzeria (pizza*)>
+<!ELEMENT pizza (pname, liked_by)>
+<!ATTLIST pizza pid CDATA #REQUIRED>
+<!ELEMENT pname (#PCDATA)>
+<!ELEMENT liked_by (customer*)>
+<!ELEMENT customer (cname, comment)>
+<!ATTLIST customer cid CDATA #REQUIRED>
+<!ELEMENT cname (#PCDATA)>
+<!ELEMENT comment (#PCDATA)>
