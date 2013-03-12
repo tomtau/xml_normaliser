@@ -71,6 +71,7 @@
         	<test name="uk.ac.ed.inf.proj.xmlnormaliser.XQueryTestCompany2" todir="${junit.output.dir}"/>
         	<test name="uk.ac.ed.inf.proj.xmlnormaliser.XQueryTestCourses" todir="${junit.output.dir}"/>
         	<test name="uk.ac.ed.inf.proj.xmlnormaliser.XQueryTestDB" todir="${junit.output.dir}"/>
+        	<test name="uk.ac.ed.inf.proj.xmlnormaliser.XQueryPizza" todir="${junit.output.dir}"/>
             <classpath refid="xml_normaliser.classpath"/>
         </junit>
     </target>
