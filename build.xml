@@ -11,7 +11,8 @@
     <path id="xml_normaliser.classpath">
         <pathelement location="bin"/>
         <path refid="JUnit 4.libraryclasspath"/>
-    	<pathelement location="libs/log4j.jar"/>
+        <pathelement location="libs/log4j.jar"/>
+        <pathelement location="libs/oy-lm-1.4.jar"/>
     </path>
     <target name="init">
         <mkdir dir="bin"/>
@@ -84,7 +85,9 @@
         </junitreport>
     </target>
     <target name="javadoc">
-        <javadoc access="public" author="true" classpath="libs/log4j.jar;libs/oy-lm-1.4.jar" destdir="doc" doctitle="Implementing an XML Normalisation Algorithm" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="uk.ac.ed.inf.proj.xmlnormaliser.parser.fd,uk.ac.ed.inf.proj.xmlnormaliser.gui,uk.ac.ed.inf.proj.xmlnormaliser.validator,uk.ac.ed.inf.proj.xmlnormaliser,uk.ac.ed.inf.proj.xmlnormaliser.parser.dtd" source="1.6" sourcepath="tests;src" splitindex="true" use="true" version="true"/>
+        <javadoc access="public" author="true" classpath="libs/log4j.jar;libs/oy-lm-1.4.jar" destdir="doc" doctitle="Implementing an XML Normalisation Algorithm" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="uk.ac.ed.inf.proj.xmlnormaliser.parser.fd,uk.ac.ed.inf.proj.xmlnormaliser.gui,uk.ac.ed.inf.proj.xmlnormaliser.validator,uk.ac.ed.inf.proj.xmlnormaliser,uk.ac.ed.inf.proj.xmlnormaliser.parser.dtd" source="1.6" sourcepath="tests;src" splitindex="true" use="true" version="true">
+        <classpath refid="xml_normaliser.classpath"/>
+        </javadoc>
     </target>	
 	
 </project>
